@@ -2,10 +2,10 @@ import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 
 const products = [
-  { id: 1, name: "Eco Laptop", price: "$1299", description: "High-performance laptop made with recycled materials and energy-efficient components." },
-  { id: 2, name: "Eco Smartphone", price: "$899", description: "Feature-packed smartphone with a biodegradable case and low-energy consumption." },
-  { id: 3, name: "Eco Headphones", price: "$299", description: "Noise-canceling headphones made from sustainable materials with a long-lasting battery." },
-  { id: 4, name: "Eco Smartwatch", price: "$399", description: "Stylish smartwatch with solar charging and eco-friendly manufacturing process." },
+  { id: 1, name: "Eco Laptop", price: "$1299", points: 1299, description: "High-performance laptop made with recycled materials and energy-efficient components." },
+  { id: 2, name: "Eco Smartphone", price: "$899", points: 899, description: "Feature-packed smartphone with a biodegradable case and low-energy consumption." },
+  { id: 3, name: "Eco Headphones", price: "$299", points: 299, description: "Noise-canceling headphones made from sustainable materials with a long-lasting battery." },
+  { id: 4, name: "Eco Smartwatch", price: "$399", points: 399, description: "Stylish smartwatch with solar charging and eco-friendly manufacturing process." },
 ];
 
 function ShopPage() {
@@ -33,6 +33,7 @@ function ShopPage() {
               <h3 className="text-lg font-semibold text-green-700 dark:text-green-400">{product.name}</h3>
               <p className="text-gray-500 dark:text-gray-300 line-through">${originalPrice}</p>
               <p className="text-gray-900 dark:text-white font-bold">${discountedPrice}</p>
+              <p className="text-gray-600 dark:text-gray-400">{product.points} points</p>
             </motion.div>
 
             {/* Proširena kartica */}
@@ -55,6 +56,7 @@ function ShopPage() {
                     <h3 className="text-2xl font-semibold text-green-700 dark:text-green-400 mb-4">{product.name}</h3>
                     <p className="text-gray-500 dark:text-gray-300 line-through">${originalPrice}</p>
                     <p className="text-gray-900 dark:text-white font-bold text-xl mb-4">${discountedPrice}</p>
+                    <p className="text-gray-600 dark:text-gray-400 text-lg mb-4">{product.points} poena</p>
                     <p className="text-gray-700 dark:text-gray-300 text-lg mb-4">{product.description}</p>
 
                     {/* Dugme Kupi */}

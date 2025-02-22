@@ -1,33 +1,45 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { NavLink } from "react-router-dom";
+import { FaCalculator } from "react-icons/fa6";
+import { LuSquareActivity } from "react-icons/lu";
+import { IoStatsChart } from "react-icons/io5";
+import { FaShoppingCart } from "react-icons/fa";
 
 const BottomBar = () => {
   return (
-    <div className="fixed bottom-0 left-0 right-0 flex justify-around items-center p-2.5 bg-gray-100 border-t border-gray-300">
-      <Link
+    <div className="fixed bottom-4 left-1/2 transform -translate-x-1/2 w-[90%] max-w-md bg-white shadow-lg rounded-full flex justify-around items-center py-3 px-4 border border-gray-200 backdrop-blur-md">
+      <NavLink
         to="/calculate"
-        className="w-1/5 px-5 py-2.5 text-base cursor-pointer border-none bg-green-500 text-white rounded-md transition-colors duration-300 hover:bg-green-600 text-center"
+        className="flex flex-col items-center text-gray-500 transition-all duration-300 hover:text-green-500"
+        activeClassName="text-green-600"
       >
-        Calculate
-      </Link>
-      <Link
+        <FaCalculator className="text-xl transition-transform duration-300 hover:scale-110" />
+        <span className="text-xs mt-1">Calc</span>
+      </NavLink>
+      <NavLink
         to="/activity"
-        className="w-1/5 px-5 py-2.5 text-base cursor-pointer border-none bg-green-500 text-white rounded-md transition-colors duration-300 hover:bg-green-600 text-center"
+        className="flex flex-col items-center text-gray-500 transition-all duration-300 hover:text-green-500"
+        activeClassName="text-green-600"
       >
-        Activity
-      </Link>
-      <Link
+        <LuSquareActivity className="text-xl transition-transform duration-300 hover:scale-110" />
+        <span className="text-xs mt-1">Activity</span>
+      </NavLink>
+      <NavLink
         to="/stats"
-        className="w-1/5 px-5 py-2.5 text-base cursor-pointer border-none bg-green-500 text-white rounded-md transition-colors duration-300 hover:bg-green-600 text-center"
+        className="flex flex-col items-center text-gray-500 transition-all duration-300 hover:text-green-500"
+        activeClassName="text-green-600"
       >
-        Stats
-      </Link>
-      <Link
+        <IoStatsChart className="text-xl transition-transform duration-300 hover:scale-110" />
+        <span className="text-xs mt-1">Stats</span>
+      </NavLink>
+      <NavLink
         to="/shop"
-        className="w-1/5 px-5 py-2.5 text-base cursor-pointer border-none bg-green-500 text-white rounded-md transition-colors duration-300 hover:bg-green-600 text-center"
+        className="flex flex-col items-center text-gray-500 transition-all duration-300 hover:text-green-500"
+        activeClassName="text-green-600"
       >
-        Shop
-      </Link>
+        <FaShoppingCart className="text-xl transition-transform duration-300 hover:scale-110" />
+        <span className="text-xs mt-1">Shop</span>
+      </NavLink>
     </div>
   );
 };

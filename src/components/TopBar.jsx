@@ -1,13 +1,28 @@
 import React from "react";
+import { FaSeedling, FaTree, FaLeaf } from "react-icons/fa";
+import { GiTreeGrowth, GiForest } from "react-icons/gi";
 
-const TopBar = () => {
+const getStreakIcon = (streak) => {
+  if (streak <= 3) return <FaSeedling className="text-green-400 text-lg" />; // Malo drvce
+  if (streak <= 7) return <FaLeaf className="text-green-500 text-lg" />; // List raste
+  if (streak <= 14) return <FaTree className="text-green-600 text-lg" />; // Veće drvo
+  if (streak <= 21) return <GiTreeGrowth className="text-green-700 text-lg" />; // Još veće drvo
+  return <GiForest className="text-green-800 text-lg" />; // Cijela šuma
+};
+
+const TopBar = ({ streak }) => {
   return (
-    <div className="flex justify-center items-center p-2.5 bg-gray-200 border-b border-gray-300 text-black">
+    <div className="fixed top-0 left-0 right-0 bg-white text-black flex justify-between items-center py-3 px-6 shadow-md">
       <div className="flex items-center space-x-2">
         <span className="font-semibold">Points:</span>
-        <span className="bg-green-500 text-white px-3 py-1 rounded-full">
+        <span className="bg-green-500 px-4 py-1.5 rounded-full text-sm font-medium shadow-md">
           100
         </span>
+      </div>
+      <div className="flex items-center space-x-2">
+        {getStreakIcon(streak)}
+        <span className="font-semibold">Streak:</span>
+        <span className="bg-yellow-500 px-3 py-1.5 rounded-full text-sm font-medium shadow-md"></span>
       </div>
     </div>
   );
