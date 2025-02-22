@@ -44,7 +44,8 @@ const TopBar = ({ streak }) => {
         <span className="bg-green-500 text-white px-4 py-1.5 rounded-full text-sm font-medium shadow-md">
           {user.points} {/* Display user points */}
         </span>
-        <span className="font-semibold">{user.username}</span> {/* Display username */}
+        <span className="font-semibold">{user.username}</span>{" "}
+        {/* Display username */}
       </div>
 
       {/* Center Section - Logo */}
