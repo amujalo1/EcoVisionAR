@@ -1,22 +1,16 @@
-// components/Layout.js
-import React from "react";
+import PhoneFrame from "./PhoneFrame";
 import TopBar from "./TopBar";
 import BottomBar from "./BottomBar";
 
 const Layout = ({ children }) => {
   return (
-    <div className="h-screen flex flex-col mx-auto" style={{ maxWidth: "375px", width: "100%" }}>
-      {/* Fiksirani TopBar */}
-      <TopBar />
-
-      {/* Glavni sadržaj s paddingom za TopBar i BottomBar */}
-      <main className="flex-1 overflow-y-auto p-4 bg-zinc-500 pt-[4rem] pb-[4rem]">
-        {children}
-      </main>
-
-      {/* Fiksirani BottomBar */}
-      <BottomBar />
-    </div>
+    <PhoneFrame className="overflow-hidden">
+      <div className="h-full flex flex-col bg-gray-50 overflow-hidden">
+        {/* <TopBar /> */}
+        <main className="flex-1 overflow-y-auto pt-14 pb-16">{children}</main>
+        <BottomBar />
+      </div>
+    </PhoneFrame>
   );
 };
 

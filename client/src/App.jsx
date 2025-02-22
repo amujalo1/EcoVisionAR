@@ -4,11 +4,10 @@ import ActivityPage from "./pages/ActivityPage";
 import StatsPage from "./pages/StatsPage";
 import ShopPage from "./pages/ShopPage";
 import CalculatorPage from "./pages/CalculatorPage";
-import Layout from "./components/Layout";
 import LoginPage from "./pages/LoginPage";
 import RegisterPage from "./pages/RegisterPage";
-import TopBar from "./components/TopBar";
-
+import QuestPage from "./pages/QuestPage";
+import Layout from "./components/Layout";
 function App() {
   return (
     <Router>
@@ -24,9 +23,38 @@ function App() {
             </Layout>
           }
         />
-        <Route path="/stats" element={<StatsPage />} />
-        <Route path="/calculate" element={<CalculatorPage />} />
-        <Route path="/shop" element={<ShopPage />} />
+        <Route
+          path="/stats"
+          element={
+            <Layout>
+              <StatsPage />
+            </Layout>
+          }
+        />
+        <Route
+          path="/quests"
+          element={
+            <Layout>
+              <QuestPage />
+            </Layout>
+          }
+        />
+        <Route
+          path="/calculate"
+          element={
+            <Layout>
+              <CalculatorPage />
+            </Layout>
+          }
+        />
+        <Route
+          path="/shop"
+          element={
+            <Layout>
+              <ShopPage />
+            </Layout>
+          }
+        />
       </Routes>
     </Router>
   );

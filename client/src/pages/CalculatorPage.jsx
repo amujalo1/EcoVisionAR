@@ -23,8 +23,6 @@ function CalculatorPage() {
 
   return (
     <>
-      <TopBar />
-
       <div className="h-full flex flex-col items-center p-5">
         <h1 className="text-2xl font-bold mb-4">CO₂ Kalkulator</h1>
 
@@ -75,7 +73,6 @@ function CalculatorPage() {
           </div>
         )}
       </div>
-      <BottomBar />
     </>
   );
 }

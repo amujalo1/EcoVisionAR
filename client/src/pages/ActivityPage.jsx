@@ -1,7 +1,9 @@
+import React, { useEffect, useState } from "react";
+import { useAtom } from "jotai";
+import { stateAtom, dispatchAtom } from "../store/store"; // Import atoms
+
 // pages/ActivityPage.js
-import { useEffect, useReducer, useState } from "react";
 import ActivityTab from "../components/ActivityTab";
-import DailyQuest from "../components/DailyQuest";
 import GPSTracker from "../components/GPSTracker";
 import { getUserById, updateDailyActivity } from "../api/api";
 import Layout from "../components/Layout";
@@ -12,44 +14,10 @@ const dailyQuests = [
   { activity: "biking", minutes: 45 },
 ];
 
-const CO2_EMISSIONS = {
-  walking: -0.1,
-  running: -0.15,
-  biking: -0.1,
-  transport: -0.3,
-};
-
-const defaultState = {
-  walking: 0,
-  running: 0,
-  biking: 0,
-  transport: 0,
-  totalCO2: 6.9,
-};
-
-function reducer(state, action) {
-  switch (action.type) {
-    case "INCREMENT": {
-      const newMinutes = state[action.activity] + Number(action.minutes);
-      const co2Impact = CO2_EMISSIONS[action.activity] * Number(action.minutes);
-      return {
-        ...state,
-        [action.activity]: newMinutes,
-        totalCO2: state.totalCO2 + co2Impact,
-      };
-    }
-    case "RESET":
-      return defaultState;
-    case "SET_INITIAL_STATE":
-      return action.payload;
-    default:
-      return state;
-  }
-}
-
 function ActivityPage() {
   const userId = localStorage.getItem("id");
-  const [state, dispatch] = useReducer(reducer, defaultState);
+  const [state, setState] = useAtom(stateAtom); // Correct way to use the stateAtom
+  const [, dispatch] = useAtom(dispatchAtom); // Access dispatch function correctly
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -64,7 +32,7 @@ function ActivityPage() {
         setLoading(false);
       })
       .catch((error) => {
-        console.error("Greška pri dohvaćanju korisnika:", error);
+        console.error("Error fetching user data:", error);
         setLoading(false);
       });
   }, [userId]);
@@ -76,15 +44,14 @@ function ActivityPage() {
   }, [state, userId, loading]);
 
   if (loading) {
-    return <p>Učitavanje podataka...</p>;
+    return <p>Loading...</p>;
   }
 
   return (
     <Layout>
       <div className="flex flex-col h-full">
         <ActivityTab state={state} dispatch={dispatch} />
-        <DailyQuest quests={dailyQuests} currentState={state} />
-        <GPSTracker dispatch={dispatch} />
+        {/* <GPSTracker dispatch={dispatch} /> */}
       </div>
     </Layout>
   );
