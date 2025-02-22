@@ -44,12 +44,27 @@ const ActivityTab = ({ state, dispatch }) => {
     <div className="p-6 max-w-2xl mx-auto bg-slate-300 rounded-2xl">
       <div className="text-center mb-6">
         <div className="text-lg font-semibold">Total CO2 Impact</div>
-        <div className="text-2xl font-bold text-gray-800">{totalCO2} kg CO2</div>
+        <div className="text-2xl font-bold text-gray-800">
+          {totalCO2} kg CO2
+        </div>
       </div>
 
       <div className="flex justify-center mb-8">
-        <RadialBarChart width={250} height={250} innerRadius="80%" outerRadius="100%" data={data} startAngle={90} endAngle={-270}>
-          <RadialBar minAngle={15} label={{ position: "insideStart", fill: "#111" }} background dataKey="value" />
+        <RadialBarChart
+          width={250}
+          height={250}
+          innerRadius="80%"
+          outerRadius="100%"
+          data={data}
+          startAngle={90}
+          endAngle={-270}
+        >
+          <RadialBar
+            minAngle={15}
+            label={{ position: "insideStart", fill: "#111" }}
+            background
+            dataKey="value"
+          />
           <Legend iconSize={10} layout="vertical" verticalAlign="middle" />
         </RadialBarChart>
       </div>
@@ -74,7 +89,12 @@ const ActivityTab = ({ state, dispatch }) => {
         </button>
       )}
 
-      <ActivityForm activity={selectedActivity} isOpen={!!selectedActivity} onSubmit={handleFormSubmit} onClose={closeForm} />
+      <ActivityForm
+        activity={selectedActivity}
+        isOpen={!!selectedActivity}
+        onSubmit={handleFormSubmit}
+        onClose={closeForm}
+      />
     </div>
   );
 };
