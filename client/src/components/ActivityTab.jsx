@@ -77,7 +77,7 @@ const ActivityTab = ({ state = {}, dispatch }) => {
   return (
     <div className="min-h-screen bg-gray-50">
       <div className="max-w-4xl mx-auto px-4">
-        <div className="mb-8 flex justify-center relative">
+        <div className="mb-2 flex justify-center relative mt-8">
           {/* Donut grafikon */}
           <div style={{ width: "100%", maxWidth: "300px" }}>
             <ReactApexChart
@@ -124,14 +124,12 @@ const ActivityTab = ({ state = {}, dispatch }) => {
           ))}
         </div>
 
-        {totalCO2 !== 7 && ( // Reset button se prikazuje samo ako totalCO2 nije početna vrijednost
-          <button
-            onClick={() => dispatch({ type: "RESET" })}
-            className="w-full max-w-xs mx-auto block px-4 py-2 bg-gray-200 rounded-lg text-gray-700 hover:bg-gray-300 transition-colors"
-          >
-            Reset Activities
-          </button>
-        )}
+        <button
+          onClick={() => dispatch({ type: "RESET" })}
+          className="mt-6 px-4 py-2 bg-gray-200 rounded-lg hover:bg-gray-300 transition-colors"
+        >
+          Reset
+        </button>
 
         <ActivityForm
           activity={selectedActivity}

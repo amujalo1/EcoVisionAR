@@ -7,7 +7,6 @@ const CO2_EMISSIONS = {
   transport: -0.3,
 };
 
-// Default state za dnevnu aktivnost
 const defaultState = {
   walking: 0,
   running: 0,
@@ -16,36 +15,38 @@ const defaultState = {
   totalCO2: 6.9,
 };
 
-// Reducer funkcija za update state-a
-const reducer = (state, action) => {
+const reducer = (state, action, userState) => {
   switch (action.type) {
     case "INCREMENT": {
       const newMinutes = state[action.activity] + Number(action.minutes);
       const co2Impact = CO2_EMISSIONS[action.activity] * Number(action.minutes);
+      const newXP = userState.experience + Number(action.minutes); // XP se povećava za svaku minutu aktivnosti
+
       return {
-        ...state,
-        [action.activity]: newMinutes,
-        totalCO2: state.totalCO2 + co2Impact,
+        newState: {
+          ...state,
+          [action.activity]: newMinutes,
+          totalCO2: state.totalCO2 + co2Impact,
+        },
+        newUserState: {
+          ...userState,
+          experience: newXP,
+        },
       };
     }
     case "RESET":
-      return defaultState;
+      return {
+        newState: defaultState,
+        newUserState: { ...userState, experience: 0 },
+      };
     case "SET_INITIAL_STATE":
-      return action.payload;
+      return { newState: action.payload, newUserState: userState };
     default:
-      return state;
+      return { newState: state, newUserState: userState };
   }
 };
 
-// Atom za čuvanje korisničkog state-a
 export const stateAtom = atom(defaultState);
-export const dispatchAtom = atom(null, (get, set, action) => {
-  const state = get(stateAtom);
-  const newState = reducer(state, action);
-  set(stateAtom, newState);
-});
-
-// 🌟 Novi atom za korisničke podatke
 export const userAtom = atom({
   username: "",
   streak: 0,
@@ -54,4 +55,13 @@ export const userAtom = atom({
   level: 1,
   friends: [],
   quests: [],
+});
+
+export const dispatchAtom = atom(null, (get, set, action) => {
+  const state = get(stateAtom);
+  const userState = get(userAtom);
+  const { newState, newUserState } = reducer(state, action, userState);
+
+  set(stateAtom, newState);
+  set(userAtom, newUserState);
 });

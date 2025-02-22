@@ -65,9 +65,20 @@ export const getUserById = async (id) => {
     throw err;
   }
 };
-
-
-
+export const getUserByUsername = async (username) => {
+  try {
+    const response = await fetch(`${API_URL}/users/username/${username}`);
+    const data = await response.json();
+    if (response.ok) {
+      return data;
+    } else {
+      throw new Error(data.message || "User not found");
+    }
+  } catch (err) {
+    console.error(err);
+    throw err;
+  }
+};
 // Function to add a friend
 export const addFriend = async (userId, friendId) => {
   try {
@@ -95,20 +106,50 @@ export const addFriend = async (userId, friendId) => {
 
 export const updateDailyActivity = async (userId, state) => {
   try {
-    const response = await fetch(`${API_URL}/users/${userId}/dailyActivity`, {
-      method: "PUT",
+    console.log(state, userId);
+    const response = await fetch(
+      `${API_URL}/users/${userId}/dailyActivity`, // updated path
+      {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(state), // Sending the state
+      }
+    );
+
+    console.log(response);
+
+    if (!response.ok) {
+      throw new Error("Neuspješno ažuriranje stanja");
+    }
+
+    return response.json();
+  } catch (error) {
+    console.error("Greška pri slanju podataka na server:", error);
+    throw error;
+  }
+};
+
+// Function to update user's stats (experience, streak, points)
+export const updateUserStats = async (
+  userId,
+  { experience, streak, points }
+) => {
+  try {
+    const response = await fetch(`${API_URL}/users/${userId}/updateStats`, {
+      method: "PATCH",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify(state),
+      body: JSON.stringify({ experience, streak, points }),
     });
-
+    console.log("what is go", body);
     const data = await response.json();
-    console.log(data);
     if (response.ok) {
       return data;
     } else {
-      throw new Error(data.message || "Error updating activity");
+      throw new Error(data.message || "Error updating user stats");
     }
   } catch (err) {
     console.error(err);

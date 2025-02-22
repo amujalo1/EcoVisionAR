@@ -1,80 +1,71 @@
 import React, { useState } from "react";
 import TopBar from "../components/TopBar";
-import BottomBar from "../components/BottomBar";
 
-function CalculatorPage() {
-  const [fuel, setFuel] = useState("");
-  const [distance, setDistance] = useState("");
-  const [electricity, setElectricity] = useState("");
-  const [emission, setEmission] = useState(null);
+function UserPage() {
+  const [search, setSearch] = useState("");
+  const [users, setUsers] = useState([
+    { username: "user1" },
+    { username: "user2" },
+    { username: "user3" },
+  ]);
 
-  // Emisijski faktori (kg CO₂ po jedinici)
-  const fuelEmissionFactor = 2.31; // kg CO₂ po litru goriva
-  const electricityEmissionFactor = 0.4; // kg CO₂ po kWh (prosječna vrijednost)
-
-  const calculateCO2 = () => {
-    const fuelEmission = (parseFloat(fuel) || 0) * fuelEmissionFactor;
-    const electricityEmission =
-      (parseFloat(electricity) || 0) * electricityEmissionFactor;
-    const totalEmission = fuelEmission + electricityEmission;
-
-    setEmission(totalEmission.toFixed(2));
+  const handleAddUser = () => {
+    // Logika za dodavanje novog korisnika
+    const newUser = { username: `user${users.length + 1}` };
+    setUsers([...users, newUser]);
   };
 
   return (
     <>
-      <div className="h-full flex flex-col items-center p-5">
-        <h1 className="text-2xl font-bold mb-4">CO₂ Kalkulator</h1>
-
-        <div className="flex flex-col gap-3 w-full max-w-md">
-          <label className="flex flex-col">
-            Gorivo (litara):
-            <input
-              type="number"
-              className="border p-2 rounded"
-              value={fuel}
-              onChange={(e) => setFuel(e.target.value)}
-            />
-          </label>
-
-          <label className="flex flex-col">
-            Udaljenost (km):
-            <input
-              type="number"
-              className="border p-2 rounded"
-              value={distance}
-              onChange={(e) => setDistance(e.target.value)}
-            />
-          </label>
-
-          <label className="flex flex-col">
-            Električna energija (kWh):
-            <input
-              type="number"
-              className="border p-2 rounded"
-              value={electricity}
-              onChange={(e) => setElectricity(e.target.value)}
-            />
-          </label>
-
+      <TopBar />
+      <div className="flex flex-col items-center p-5 mt-10">
+        {/* Search input and Add button */}
+        <div className="flex gap-3 mb-6">
+          <input
+            type="text"
+            className="border p-2 rounded w-64"
+            placeholder="Pretraži korisnike"
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+          />
           <button
             className="bg-blue-500 text-white p-2 rounded hover:bg-blue-600 transition"
-            onClick={calculateCO2}
+            onClick={handleAddUser}
           >
-            Izračunaj CO₂ emisiju
+            Dodaj
           </button>
         </div>
 
-        {emission !== null && (
-          <div className="mt-4 p-4 bg-gray-100 rounded">
-            <p className="text-lg font-semibold">
-              Ukupna CO₂ emisija: {emission} kg
-            </p>
-          </div>
-        )}
+        {/* User table */}
+        <div className="w-full max-w-3xl overflow-x-auto bg-white rounded-lg shadow-lg">
+          <table className="w-full table-auto border-separate border-spacing-0">
+            <thead>
+              <tr className="bg-gray-100">
+                <th className="border-b p-3 text-left">Username</th>
+                <th className="border-b p-3 text-left">Akcija</th>
+              </tr>
+            </thead>
+            <tbody>
+              {users
+                .filter((user) =>
+                  user.username.toLowerCase().includes(search.toLowerCase())
+                )
+                .map((user, index) => (
+                  <tr key={index} className="border-b">
+                    <td className="p-3">{user.username}</td>
+                    <td className="p-3">
+                      <button className="bg-blue-500 text-white p-2 rounded hover:bg-blue-600 transition">
+                        Dodaj
+                      </button>
+                    </td>
+                  </tr>
+                ))}
+            </tbody>
+          </table>
+        </div>
       </div>
     </>
   );
 }
 
-export default CalculatorPage;
+export default UserPage;

@@ -1,8 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useAtom } from "jotai";
-import { stateAtom, dispatchAtom } from "../store/store"; // Import atoms
-
-// pages/ActivityPage.js
+import { stateAtom, dispatchAtom, userAtom } from "../store/store"; // Imported atoms
+import TopBar from "../components/TopBar";
 import ActivityTab from "../components/ActivityTab";
 import GPSTracker from "../components/GPSTracker";
 import { getUserById, updateDailyActivity } from "../api/api";
@@ -16,42 +15,55 @@ const dailyQuests = [
 
 function ActivityPage() {
   const userId = localStorage.getItem("id");
-  const [state, setState] = useAtom(stateAtom); // Correct way to use the stateAtom
-  const [, dispatch] = useAtom(dispatchAtom); // Access dispatch function correctly
+  const [state, setState] = useAtom(stateAtom);
+  const [user, setUser] = useAtom(userAtom);
+  const [, dispatch] = useAtom(dispatchAtom);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     if (!userId) return;
 
     getUserById(userId)
-      .then((user) => {
+      .then((userData) => {
         dispatch({
           type: "SET_INITIAL_STATE",
-          payload: user.dailyActivity || defaultState,
+          payload: userData.dailyActivity || defaultState, // Postavljanje početnog stanja
         });
+
+        setUser(userData); // Postavljanje korisničkog stanja
         setLoading(false);
       })
       .catch((error) => {
-        console.error("Error fetching user data:", error);
+        console.error("Greška pri dohvatanju korisničkih podataka:", error);
         setLoading(false);
       });
   }, [userId]);
 
+  // Učitaj i ažuriraj bazu kad god se promijeni stanje (uključujući XP)
   useEffect(() => {
-    if (!loading && userId) {
-      updateDailyActivity(userId, state);
+    if (!loading && userId && state) {
+      updateDailyActivity(userId, state)
+        .then(() => {
+          console.log("Stanje uspješno ažurirano u bazi");
+        })
+        .catch((error) => {
+          console.error("Greška pri ažuriranju stanja:", error);
+        });
     }
   }, [state, userId, loading]);
 
-  if (loading) {
-    return <p>Loading...</p>;
-  }
-
   return (
     <Layout>
+      <TopBar />
       <div className="flex flex-col h-full">
         <ActivityTab state={state} dispatch={dispatch} />
-        { <GPSTracker dispatch={dispatch} /> }
+        <button
+          onClick={() => dispatch({ type: "RESET" })}
+          className="mt-6 px-4 py-2 bg-gray-200 rounded-lg hover:bg-gray-300 transition-colors"
+        >
+          Reset
+        </button>
+        {<GPSTracker dispatch={dispatch} />}
       </div>
     </Layout>
   );

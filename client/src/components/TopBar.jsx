@@ -1,68 +1,81 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { FaSeedling, FaTree, FaLeaf } from "react-icons/fa";
 import { GiTreeGrowth, GiForest } from "react-icons/gi";
-import logo from "/logo.png";
-import LogoutButton from "./LogoutButton";
-import { getUserById } from "../api/api"; // Import the function to get user by ID
+import { getUserById } from "../api/api";
+import { useAtom } from "jotai";
+import { userAtom } from "../store/store";
 
-const getStreakIcon = (streak) => {
-  if (streak <= 3) return <FaSeedling className="text-green-400 text-lg" />;
-  if (streak <= 7) return <FaLeaf className="text-green-500 text-lg" />;
-  if (streak <= 14) return <FaTree className="text-green-600 text-lg" />;
-  if (streak <= 21) return <GiTreeGrowth className="text-green-700 text-lg" />;
-  return <GiForest className="text-green-800 text-lg" />;
+const levels = [
+  { level: 1, xp: 0, title: "Eco Seedling 🌱" },
+  { level: 2, xp: 100, title: "Green Sprout 🌿" },
+  { level: 3, xp: 300, title: "Nature Explorer 🍃" },
+  { level: 4, xp: 600, title: "Eco Guardian 🌾" },
+  { level: 5, xp: 1000, title: "Eco Warrior 🌍" },
+  { level: 6, xp: 1500, title: "Sustainable Hero 🌎" },
+  { level: 7, xp: 2100, title: "Climate Champion 🌏" },
+  { level: 8, xp: 2800, title: "Environmental Master 🌲" },
+  { level: 9, xp: 3600, title: "Planet Protector 🌳" },
+  { level: 10, xp: 4500, title: "Earth Guardian 🏔️" },
+];
+
+const getCurrentLevel = (xp) => {
+  let current = levels[0];
+  for (let lvl of levels) {
+    if (xp >= lvl.xp) current = lvl;
+    else break;
+  }
+  return current;
 };
 
-const TopBar = ({ streak }) => {
-  const [user, setUser] = useState(null);
-  const userId = localStorage.getItem("id"); // Get the userId from localStorage
+const getNextLevelXP = (level) => {
+  const next = levels.find((lvl) => lvl.level === level + 1);
+  return next ? next.xp : levels[levels.length - 1].xp;
+};
+
+const TopBar = () => {
+  const [user, setUser] = useAtom(userAtom);
+  const userId = localStorage.getItem("id");
 
   useEffect(() => {
     const fetchUser = async () => {
       if (userId) {
         try {
-          const userData = await getUserById(userId); // Fetch user data using the userId from localStorage
-          setUser(userData); // Store the user data in the state
+          const userData = await getUserById(userId);
+          setUser(userData);
         } catch (err) {
-          console.error("Error fetching user data:", err);
+          console.error("Greška pri dohvatanju korisničkih podataka:", err);
         }
       }
     };
 
-    fetchUser(); // Fetch the user data when the component is mounted
+    fetchUser();
   }, [userId]);
 
   if (!user) {
-    return <div>Loading...</div>; // Show loading state while user data is being fetched
+    return <div className="text-center py-2">Učitavanje...</div>;
   }
 
+  const { experience } = user;
+  const currentLevel = getCurrentLevel(experience);
+  const nextLevelXP = getNextLevelXP(currentLevel.level);
+  const progress =
+    ((experience - currentLevel.xp) / (nextLevelXP - currentLevel.xp)) * 100;
+
   return (
-    <div className="fixed top-0 left-0 right-0 bg-white text-black flex items-center justify-between py-3 px-6 shadow-md border-b border-gray-200 z-10">
-      {/* Left Section - Points and Username */}
-      <div className="flex items-center gap-3">
-        <span className="font-semibold">Points:</span>
-        <span className="bg-green-500 text-white px-4 py-1.5 rounded-full text-sm font-medium shadow-md">
-          {user.points} {/* Display user points */}
+    <div className="fixed top-0 left-1/2 -translate-x-1/2 w-full rounded-xl max-w-md bg-white border-t border-gray-200 z-50 shadow-lg p-3">
+      <div className="flex flex-col items-center text-center">
+        <span className="text-lg font-semibold text-green-600">
+          {currentLevel.title} (Level {currentLevel.level})
         </span>
-        <span className="font-semibold">{user.username}</span>{" "}
-        {/* Display username */}
-      </div>
 
-      {/* Center Section - Logo */}
-      <div className="flex-1 flex justify-center">
-        <img src={logo} alt="Logo" className="h-12 object-contain" />
-      </div>
-
-      {/* Right Section - Streak and Logout */}
-      <div className="flex items-center gap-4">
-        <div className="flex items-center gap-2">
-          {getStreakIcon(streak)}
-          <span className="font-semibold">Streak:</span>
-          <span className="bg-yellow-500 text-white px-3 py-1.5 rounded-full text-sm font-medium shadow-md">
-            {streak}
-          </span>
+        <div className="relative w-full h-3 bg-gray-300 rounded-full overflow-hidden mt-2">
+          <div
+            className="absolute left-0 h-full bg-transparent rounded-full transition-all flex items-center justify-center"
+            style={{ width: "100%" }} // Prazna traka zauzima 100% širine
+          >
+            XP: {experience}/{nextLevelXP}
+          </div>
         </div>
-        <LogoutButton />
       </div>
     </div>
   );
