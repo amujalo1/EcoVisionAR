@@ -1,7 +1,7 @@
 import { useReducer } from "react";
+import GPSTracker from "../components/GPSTracker"; // Importujemo GPSTracker
 import ActivityTab from "../components/ActivityTab";
 import DailyQuest from "../components/DailyQuest";
-import GPSTracker from "../components/GPSTracker"; // Importujemo GPSTracker
 
 const dailyQuests = [
   { activity: "walking", minutes: 30 },

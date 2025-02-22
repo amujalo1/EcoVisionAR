@@ -1,86 +1,88 @@
-import { useEffect, useState } from "react";
+import { useState, useEffect } from "react";
+import { MapContainer, TileLayer, Polyline, Marker } from "react-leaflet";
+import "leaflet/dist/leaflet.css";
+
+// Haversine formula for distance calculation
+const calculateDistance = (lat1, lon1, lat2, lon2) => {
+  console.log(lon1, lon2, lat1, lat2);
+  const R = 6371; // Earth radius in km
+  const dLat = ((lat2 - lat1) * Math.PI) / 180;
+  const dLon = ((lon2 - lon1) * Math.PI) / 180;
+  const a =
+    Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+    Math.cos((lat1 * Math.PI) / 180) *
+      Math.cos((lat2 * Math.PI) / 180) *
+      Math.sin(dLon / 2) *
+      Math.sin(dLon / 2);
+  const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+  return R * c * 1000; // Distance in meters
+};
 
 const GPSTracker = ({ dispatch }) => {
-  const [lastPosition, setLastPosition] = useState(null);
-  const [distanceCovered, setDistanceCovered] = useState(0);
-  const [lastUpdate, setLastUpdate] = useState(0); // Za praćenje vremena kada je zadnja promjena
-  const MIN_DISTANCE = 20; // Minimalna udaljenost za inkrementiranje (20 metara)
-  const INCREMENT_INTERVAL = 60 * 1000; // 1 minuta u milisekundama
+  const [positions, setPositions] = useState([]);
+  const [distance, setDistance] = useState(0);
+
+  console.log(positions);
+  console.log(distance);
 
   useEffect(() => {
-    let watchId;
+    if ("geolocation" in navigator) {
+      const watchId = navigator.geolocation.watchPosition(
+        (position) => {
+          const { latitude, longitude } = position.coords;
 
-    // Funkcija za izračunavanje udaljenosti između dvije GPS pozicije (Haversineova formula)
-    const calculateDistance = (pos1, pos2) => {
-      const R = 6371; // Radius Zemlje u kilometrima
-      const dLat = (pos2.latitude - pos1.latitude) * (Math.PI / 180);
-      const dLon = (pos2.longitude - pos1.longitude) * (Math.PI / 180);
-      const a =
-        Math.sin(dLat / 2) * Math.sin(dLat / 2) +
-        Math.cos(pos1.latitude * (Math.PI / 180)) *
-          Math.cos(pos2.latitude * (Math.PI / 180)) *
-          Math.sin(dLon / 2) *
-          Math.sin(dLon / 2);
-      const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-      const distance = R * c * 1000; // Vrati udaljenost u metrima
-      return distance;
-    };
+          setPositions((prevPositions) => {
+            if (prevPositions.length > 0) {
+              const prev = prevPositions[prevPositions.length - 1];
 
-    // Funkcija za praćenje promjena pozicije
-    const handlePositionChange = (position) => {
-      const { latitude, longitude } = position.coords;
-      const currentPosition = { latitude, longitude };
+                // Skip distance calculation if the first four decimals are the same
+                if (
+                  latitude.toFixed(4) === prev.lat.toFixed(4) &&
+                  longitude.toFixed(4) === prev.lng.toFixed(4)
+                ) {
+                  return prevPositions;
+                }
 
-      // Provjera da li imamo prethodnu poziciju za izračun udaljenosti
-      if (lastPosition) {
-        const distance = calculateDistance(lastPosition, currentPosition);
+                const dist = calculateDistance(prev.lat, prev.lng, latitude, longitude);
+                
+              if (dist > 1) {
+                setDistance((prevDistance) => prevDistance + dist);
 
-        // Ako pređena udaljenost premaši minimalnu udaljenost, inkrementiraj hodanje
-        if (distance >= MIN_DISTANCE) {
-          setDistanceCovered((prevDistance) => {
-            const newDistance = prevDistance + distance;
-
-            // Ako pređena udaljenost premašuje prag, inkrementiraj minut hodanja
-            if (newDistance >= MIN_DISTANCE) {
-              dispatch({ type: "INCREMENT", activity: "walking", minutes: 1 });
-              setDistanceCovered(0); // Resetiraj pređenu udaljenost
+                // ✅ Dispatch walking time update (assuming 80 meters ≈ 1 min walking)
+                dispatch({ type: "INCREMENT", activity: "walking", minutes: dist / 80 });
+              }
             }
-            return newDistance;
+            return [...prevPositions, { lat: latitude, lng: longitude }];
           });
-
-          // Pohrani trenutnu poziciju za narednu provjeru
-          setLastPosition(currentPosition);
+        },
+        (error) => console.error("GPS Error:", error),
+        {
+          enableHighAccuracy: true,
+          maximumAge: 10000,
+          timeout: 5000,
         }
-      } else {
-        // Ako nema prethodne pozicije, pohrani trenutnu poziciju
-        setLastPosition(currentPosition);
-      }
-    };
+      );
 
-    // Funkcija koja se poziva kad se pozicija promijeni
-    const trackPosition = () => {
-      // Provjera geolokacije
-      if (navigator.geolocation) {
-        watchId = navigator.geolocation.watchPosition(handlePositionChange, (error) => {
-          console.error("Geolocation error", error);
-        });
-      } else {
-        console.log("Geolocation is not supported by this browser.");
-      }
-    };
+      return () => navigator.geolocation.clearWatch(watchId);
+    }
+  }, [dispatch]);
 
-    // Početno pokretanje praćenja pozicije
-    trackPosition();
+  return (
+    <div>
+      <h2>Walking Distance Tracker</h2>
+      <p>Distance Walked: {distance.toFixed(2)} meters</p>
 
-    // Očisti watch ID kada komponenta bude demontirana
-    return () => {
-      if (watchId) {
-        navigator.geolocation.clearWatch(watchId);
-      }
-    };
-  }, [dispatch, lastPosition]);
-
-  return null; // Ova komponenta samo prati GPS, ne prikazuje ništa u UI-u
+      {positions.length > 0 ? (
+        <MapContainer center={positions[0]} zoom={18} style={{ height: "400px", width: "100%" }}>
+          <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
+          <Polyline positions={positions} color="green" />
+          <Marker position={positions[positions.length - 1]} />
+        </MapContainer>
+      ) : (
+        <p>Waiting for GPS signal...</p>
+      )}
+    </div>
+  );
 };
 
 export default GPSTracker;

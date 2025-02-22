@@ -26,6 +26,7 @@ const ActivityTab = ({ state, dispatch }) => {
   };
 
   const totalCO2 = state.totalCO2.toFixed(2);
+  console.log(totalCO2);
   const co2Percentage = Math.min(Math.max(state.totalCO2 / 10, 0), 1) * 100;
 
   // Promjena boje na osnovu totalCO2 vrijednosti
