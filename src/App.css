@@ -1,0 +1,90 @@
+/* Eco-friendly theme for the leaderboard */
+.leaderboard {
+  width: 60%;
+  margin: 20px auto;
+  padding: 20px;
+  border: 1px solid #c7e1c7; /* Light green border */
+  border-radius: 10px;
+  background-color: #eaf7e5; /* Soft light green background */
+}
+
+table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 10px; /* Adds space between columns */
+}
+
+th, td {
+  padding: 12px;
+  text-align: center;
+  border: 1px solid #b4e1b4; /* Soft green border around cells */
+  font-family: 'Arial', sans-serif;
+}
+
+th {
+  background-color: #b4e1b4; /* Light green for header */
+  color: #fff; /* White text for header */
+  font-weight: bold;
+}
+
+td {
+  background-color: #f9f9f9; /* Light background for table cells */
+  color: #333; /* Dark text color for contrast */
+}
+
+tr:nth-child(even) {
+  background-color: #eaf7e5; /* Soft green for even rows */
+}
+
+tr:hover {
+  background-color: #d0f0c0; /* Light green hover effect */
+  cursor: pointer;
+}
+
+h2 {
+  text-align: center;
+  color: #4caf50; /* Eco-friendly green for the header */
+  font-family: 'Arial', sans-serif;
+  font-weight: 600;
+}
+
+.score-container {
+  width: 50%;
+  margin: 20px auto;
+  padding: 15px;
+  text-align: center;
+  background-color: #f9f9f9;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.score-table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 10px;
+  background-color: #e6f7e6; /* Light green background */
+  border: 1px solid #c8e6c9;
+  border-radius: 5px;
+}
+
+th, td {
+  padding: 12px;
+  text-align: center;
+  font-size: 18px;
+}
+
+th {
+  background-color: #a5d6a7; /* Slightly darker green */
+  color: #fff;
+}
+
+tr:nth-child(even) {
+  background-color: #f1f8e9; /* Light green for even rows */
+}
+
+h3 {
+  color: #388e3c; /* Dark green for the title */
+  font-size: 22px;
+  margin-bottom: 15px;
+}
+
