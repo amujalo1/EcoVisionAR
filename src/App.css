@@ -1,0 +1,83 @@
+html, body, #root {
+    height: 100%;
+    margin: 0;
+  }
+  
+  .top-bar {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 10px;
+    background-color: #f0f0f0;
+    border-bottom: 1px solid #ccc;
+    color: black;
+  }
+  
+  .middle-section {
+    flex: 1; 
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+  }
+  
+  .bottom-bar {
+    position: fixed; /* Fiksira donji bar na dno ekrana */
+    bottom: 0; /* Postavlja ga na dno */
+    left: 0; /* Počinje od lijevog ruba */
+    right: 0; /* Proteže se do desnog ruba */
+    display: flex;quotes: ;
+    justify-content: space-around; /* Ravnomjerno razvrstava dugmad */
+    align-items: center;
+    padding: 10px;
+    background-color: #f0f0f0;
+    border-top: 1px solid #ccc;
+  }
+  
+  /* Stil za dugmad */
+  .bottom-bar button {
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+    border: none;
+    background-color: #007bff;
+    color: white;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+    width: 20%;
+  }
+  
+  .bottom-bar button:hover {
+    background-color: #0056b3;
+  }
+  /* BottomBar.css */
+.bottom-bar {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    padding: 10px;
+    background-color: #f3f4f6;
+    border-top: 1px solid #d1d5db;
+  }
+  
+  .bottom-bar-link {
+    width: 20%;
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+    border: none;
+    background-color: #3b82f6;
+    color: white;
+    border-radius: 6px;
+    transition: background-color 0.3s;
+    text-align: center;
+    text-decoration: none;
+  }
+  
+  .bottom-bar-link:hover {
+    background-color: #2563eb;
+  }
