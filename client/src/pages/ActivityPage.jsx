@@ -1,10 +1,7 @@
-import { useEffect, useReducer } from "react";
+import { useReducer } from "react";
 import ActivityTab from "../components/ActivityTab";
 import DailyQuest from "../components/DailyQuest";
 import GPSTracker from "../components/GPSTracker"; // Importujemo GPSTracker
-import TopBar from "../components/TopBar";
-import BottomBar from "../components/BottomBar";
-import { getUserById, updateDailyActivity } from "../api/api";
 
 const dailyQuests = [
   { activity: "walking", minutes: 30 },
