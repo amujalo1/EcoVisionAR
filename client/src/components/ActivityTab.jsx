@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { RadialBarChart, RadialBar } from "recharts";
 import ActivityIcon from "./ActivityIcon";
 import ActivityForm from "./ActivityForm";
 import ReactApexChart from "react-apexcharts";
@@ -113,6 +114,7 @@ const ActivityTab = ({ state = {}, dispatch }) => {
         </button>
       )}
 
+      {/* Activity Form */}
       <ActivityForm
         activity={selectedActivity}
         isOpen={!!selectedActivity}

@@ -4,11 +4,9 @@ import ActivityPage from "./pages/ActivityPage";
 import StatsPage from "./pages/StatsPage";
 import ShopPage from "./pages/ShopPage";
 import CalculatorPage from "./pages/CalculatorPage";
-import Layout from "./components/Layout";
 import LoginPage from "./pages/LoginPage";
 import RegisterPage from "./pages/RegisterPage";
-import TopBar from "./components/TopBar";
-
+import QuestPage from "./pages/QuestPage";
 function App() {
   return (
     <Router>
@@ -18,6 +16,7 @@ function App() {
         <Route path="/register" element={<RegisterPage />} />
         <Route path="/activity" element={<ActivityPage />} />
         <Route path="/stats" element={<StatsPage />} />
+        <Route path="/quests" element={<QuestPage />} />
         <Route path="/calculate" element={<CalculatorPage />} />
         <Route path="/shop" element={<ShopPage />} />
       </Routes>

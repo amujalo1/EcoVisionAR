@@ -2,12 +2,14 @@ require("dotenv").config({ path: ".env" });
 
 const express = require("express");
 const mongoose = require("mongoose");
-const cors = require("cors");
 const userRoutes = require("./routes/userRoutes");
 
 const app = express();
 
-// Omogućavanje CORS-a eksplicitno za frontend
+// In your server.js/index.js
+const cors = require("cors");
+
+// Add this before your routes
 app.use(
   cors({
     //origin: "http://localhost:5173", // Postavi frontend URL
