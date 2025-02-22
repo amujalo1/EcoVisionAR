@@ -26,7 +26,7 @@ const BottomBar = () => {
         to="/more"
         className="w-1/5 px-5 py-2.5 text-base cursor-pointer border-none bg-green-500 text-white rounded-md transition-colors duration-300 hover:bg-green-600 text-center"
       >
-        More
+        Shop
       </Link>
     </div>
   );
