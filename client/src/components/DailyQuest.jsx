@@ -9,7 +9,6 @@ import {
 } from "react-icons/fa";
 
 const DailyQuest = ({ quests, currentState }) => {
-  // Helper function to get icon by activity type
   const getIcon = (activity) => {
     const icons = {
       walking: FaWalking,
@@ -21,14 +20,12 @@ const DailyQuest = ({ quests, currentState }) => {
     return icons[activity] || FaMedal;
   };
 
-  // Calculate completion percentage for progress bar
   const calculateProgress = (quest) => {
     const current = currentState[quest.activity] || 0;
     const percentage = Math.min((current / quest.minutes) * 100, 100);
     return percentage;
   };
 
-  // Check if quest is completed
   const isQuestCompleted = (quest) => {
     const current = currentState[quest.activity] || 0;
     return current >= quest.minutes;
@@ -94,8 +91,7 @@ const DailyQuest = ({ quests, currentState }) => {
 
               <div className="mt-2 text-sm text-gray-600 flex justify-between">
                 <span>
-                  Progress: {currentState[quest.activity] || 0}/{quest.minutes}{" "}
-                  minutes
+                  {currentState[quest.activity] || 0}/{quest.minutes} minutes
                 </span>
                 <span>{Math.round(progress)}%</span>
               </div>

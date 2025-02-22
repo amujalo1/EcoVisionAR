@@ -4,7 +4,7 @@ import "leaflet/dist/leaflet.css";
 
 // Haversine formula for distance calculation
 const calculateDistance = (lat1, lon1, lat2, lon2) => {
-  // console.log(lon1, lon2, lat1, lat2);
+  console.log(lon1, lon2, lat1, lat2);
   const R = 6371; // Earth radius in km
   const dLat = ((lat2 - lat1) * Math.PI) / 180;
   const dLon = ((lon2 - lon1) * Math.PI) / 180;
@@ -22,8 +22,8 @@ const GPSTracker = ({ dispatch }) => {
   const [positions, setPositions] = useState([]);
   const [distance, setDistance] = useState(0);
 
-  // console.log(positions);
-  // console.log(distance);
+  console.log(positions);
+  console.log(distance);
 
   useEffect(() => {
     if ("geolocation" in navigator) {
@@ -31,18 +31,18 @@ const GPSTracker = ({ dispatch }) => {
         (position) => {
           const { latitude, longitude } = position.coords;
 
+          if (isNaN(latitude) || isNaN(longitude)) {
+            console.error("Invalid GPS coordinates:", latitude, longitude);
+            return;
+          }
+
           setPositions((prevPositions) => {
+            const updatedPositions = [
+              ...prevPositions,
+              { lat: latitude, lng: longitude },
+            ];
             if (prevPositions.length > 0) {
               const prev = prevPositions[prevPositions.length - 1];
-
-              // Skip distance calculation if the first four decimals are the same
-              if (
-                latitude.toFixed(4) === prev.lat.toFixed(4) &&
-                longitude.toFixed(4) === prev.lng.toFixed(4)
-              ) {
-                return prevPositions;
-              }
-
               const dist = calculateDistance(
                 prev.lat,
                 prev.lng,
@@ -53,21 +53,21 @@ const GPSTracker = ({ dispatch }) => {
               if (dist > 1) {
                 setDistance((prevDistance) => prevDistance + dist);
 
+                // Calculate activity type and update
                 let activity = "walking";
-                let speedFactor = 80; // meters per minute
-
+                let speedFactor = 80;
                 if (dist >= 5 && dist < 10) {
                   activity = "running";
                   speedFactor = 150;
                 } else if (dist >= 10 && dist < 25) {
-                  activity = "bicycle";
+                  activity = "biking";
                   speedFactor = 300;
                 } else if (dist >= 25) {
-                  activity = "tram";
+                  activity = "transport";
                   speedFactor = 600;
                 }
 
-                // ✅ Dispatch based on detected activity
+                // Dispatch activity update only if valid
                 dispatch({
                   type: "INCREMENT",
                   activity,
@@ -75,7 +75,8 @@ const GPSTracker = ({ dispatch }) => {
                 });
               }
             }
-            return [...prevPositions, { lat: latitude, lng: longitude }];
+
+            return updatedPositions;
           });
         },
         (error) => console.error("GPS Error:", error),

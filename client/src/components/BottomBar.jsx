@@ -1,6 +1,6 @@
 import React from "react";
 import { NavLink } from "react-router-dom";
-import { FaCalculator } from "react-icons/fa6";
+import { FaCalculator, FaChessKnight } from "react-icons/fa6";
 import { LuSquareActivity } from "react-icons/lu";
 import { IoStatsChart } from "react-icons/io5";
 import { FaShoppingCart } from "react-icons/fa";
@@ -14,6 +14,13 @@ const BottomBar = () => {
       >
         <FaCalculator className="text-xl transition-transform duration-300 hover:scale-110" />
         <span className="text-xs mt-1">Calc</span>
+      </NavLink>
+      <NavLink
+        to="/quests"
+        className="flex flex-col items-center text-gray-500 transition-all duration-300 hover:text-green-500"
+      >
+        <FaChessKnight className="text-xl transition-transform duration-300 hover:scale-110" />
+        <span className="text-xs mt-1">Quests</span>
       </NavLink>
       <NavLink
         to="/activity"
