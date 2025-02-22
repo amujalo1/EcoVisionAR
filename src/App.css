@@ -1,90 +1,83 @@
-/* Eco-friendly theme for the leaderboard */
-.leaderboard {
-  width: 60%;
-  margin: 20px auto;
-  padding: 20px;
-  border: 1px solid #c7e1c7; /* Light green border */
-  border-radius: 10px;
-  background-color: #eaf7e5; /* Soft light green background */
-}
-
-table {
-  width: 100%;
-  border-collapse: separate;
-  border-spacing: 10px; /* Adds space between columns */
-}
-
-th, td {
-  padding: 12px;
-  text-align: center;
-  border: 1px solid #b4e1b4; /* Soft green border around cells */
-  font-family: 'Arial', sans-serif;
-}
-
-th {
-  background-color: #b4e1b4; /* Light green for header */
-  color: #fff; /* White text for header */
-  font-weight: bold;
-}
-
-td {
-  background-color: #f9f9f9; /* Light background for table cells */
-  color: #333; /* Dark text color for contrast */
-}
-
-tr:nth-child(even) {
-  background-color: #eaf7e5; /* Soft green for even rows */
-}
-
-tr:hover {
-  background-color: #d0f0c0; /* Light green hover effect */
-  cursor: pointer;
-}
-
-h2 {
-  text-align: center;
-  color: #4caf50; /* Eco-friendly green for the header */
-  font-family: 'Arial', sans-serif;
-  font-weight: 600;
-}
-
-.score-container {
-  width: 50%;
-  margin: 20px auto;
-  padding: 15px;
-  text-align: center;
-  background-color: #f9f9f9;
-  border-radius: 10px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-}
-
-.score-table {
-  width: 100%;
-  border-collapse: separate;
-  border-spacing: 10px;
-  background-color: #e6f7e6; /* Light green background */
-  border: 1px solid #c8e6c9;
-  border-radius: 5px;
-}
-
-th, td {
-  padding: 12px;
-  text-align: center;
-  font-size: 18px;
-}
-
-th {
-  background-color: #a5d6a7; /* Slightly darker green */
-  color: #fff;
-}
-
-tr:nth-child(even) {
-  background-color: #f1f8e9; /* Light green for even rows */
-}
-
-h3 {
-  color: #388e3c; /* Dark green for the title */
-  font-size: 22px;
-  margin-bottom: 15px;
-}
-
+html, body, #root {
+    height: 100%;
+    margin: 0;
+  }
+  
+  .top-bar {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 10px;
+    background-color: #f0f0f0;
+    border-bottom: 1px solid #ccc;
+    color: black;
+  }
+  
+  .middle-section {
+    flex: 1; 
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+  }
+  
+  .bottom-bar {
+    position: fixed; /* Fiksira donji bar na dno ekrana */
+    bottom: 0; /* Postavlja ga na dno */
+    left: 0; /* Počinje od lijevog ruba */
+    right: 0; /* Proteže se do desnog ruba */
+    display: flex;quotes: ;
+    justify-content: space-around; /* Ravnomjerno razvrstava dugmad */
+    align-items: center;
+    padding: 10px;
+    background-color: #f0f0f0;
+    border-top: 1px solid #ccc;
+  }
+  
+  /* Stil za dugmad */
+  .bottom-bar button {
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+    border: none;
+    background-color: #007bff;
+    color: white;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+    width: 20%;
+  }
+  
+  .bottom-bar button:hover {
+    background-color: #0056b3;
+  }
+  /* BottomBar.css */
+.bottom-bar {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    padding: 10px;
+    background-color: #f3f4f6;
+    border-top: 1px solid #d1d5db;
+  }
+  
+  .bottom-bar-link {
+    width: 20%;
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+    border: none;
+    background-color: #3b82f6;
+    color: white;
+    border-radius: 6px;
+    transition: background-color 0.3s;
+    text-align: center;
+    text-decoration: none;
+  }
+  
+  .bottom-bar-link:hover {
+    background-color: #2563eb;
+  }
