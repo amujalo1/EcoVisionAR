@@ -46,7 +46,7 @@ function ShopPage() {
   };
 
   return (
-    <div className="grid grid-cols-2 md:grid-cols-4 gap-4 p-6">
+    <div className="grid grid-cols-1 md:grid-cols-1 gap-4 p-6">
       {products.map((product) => {
         const originalPrice = parseInt(product.price.slice(1));
         const discountedPrice = originalPrice - 100;
