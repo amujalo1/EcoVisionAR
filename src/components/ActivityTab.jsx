@@ -55,8 +55,14 @@ const ActivityTab = () => {
   const co2Color = state.totalCO2 < 0 ? "text-green-600" : "text-red-600";
 
   return (
-    <div className="p-6 max-w-2xl mx-auto">
-      <div className="flex flex-col items-center gap-6">
+    <div className="p-6 max-w-2xl mx-auto m-12">
+      <div className="text-center mb-12">
+        <div className="text-lg font-semibold">Total CO2 Impact</div>
+        <div className={`text-2xl font-bold ${co2Color}`}>
+          {totalCO2} kg CO2
+        </div>
+      </div>
+      <div className="flex flex-col items-center gap-6 mt-32">
         <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
           {Object.keys(CO2_EMISSIONS).map((activity) => (
             <ActivityIcon
@@ -66,13 +72,6 @@ const ActivityTab = () => {
               onClick={() => handleActivityClick(activity)}
             />
           ))}
-        </div>
-
-        <div className="text-center">
-          <div className="text-lg font-semibold">Total CO2 Impact</div>
-          <div className={`text-2xl font-bold ${co2Color}`}>
-            {totalCO2} kg CO2
-          </div>
         </div>
 
         {state.totalCO2 !== 0 && (

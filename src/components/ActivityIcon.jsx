@@ -1,4 +1,4 @@
-import React from "react";
+import React, { act } from "react";
 import { FaWalking, FaRunning, FaBicycle, FaCar } from "react-icons/fa";
 
 const CO2_EMISSIONS = {
@@ -37,6 +37,7 @@ const ActivityIcon = ({ activity, onClick, count }) => {
       <div className="text-center">
         <div className="font-medium capitalize">{activity}</div>
         <div className="text-sm">{count} mins</div>
+        <div className="text-sm">{count * CO2_EMISSIONS[activity]} KG CO2</div>
       </div>
     </div>
   );
