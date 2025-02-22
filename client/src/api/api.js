@@ -115,3 +115,20 @@ export const updateDailyActivity = async (userId, state) => {
     throw err;
   }
 };
+
+// api.js - Function to fetch all users
+export const getAllUsers = async () => {
+  try {
+    const response = await fetch(`${API_URL}/users`);
+    const data = await response.json();
+    if (response.ok) {
+      return data;
+    } else {
+      throw new Error(data.message || "Error fetching users");
+    }
+  } catch (err) {
+    console.error(err);
+    throw err;
+  }
+};
+
