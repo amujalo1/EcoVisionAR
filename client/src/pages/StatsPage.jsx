@@ -14,7 +14,10 @@ const StatsPage = () => {
     "67b9f898302cd1410ff16587",
     "67ba30ea78da4abfede2621d",
     "67ba310578da4abfede26226",
-    "67ba33fb78da4abfede26244"
+    "67ba33fb78da4abfede26244",
+    "67ba631703c8720cb1c81adb",
+    "67ba632603c8720cb1c81ade",
+    "67ba633403c8720cb1c81ae1"
   ];
 
   useEffect(() => {
