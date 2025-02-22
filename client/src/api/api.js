@@ -66,6 +66,8 @@ export const getUserById = async (id) => {
   }
 };
 
+
+
 // Function to add a friend
 export const addFriend = async (userId, friendId) => {
   try {

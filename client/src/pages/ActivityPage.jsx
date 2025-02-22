@@ -51,7 +51,7 @@ function ActivityPage() {
     <Layout>
       <div className="flex flex-col h-full">
         <ActivityTab state={state} dispatch={dispatch} />
-        {/* <GPSTracker dispatch={dispatch} /> */}
+        { <GPSTracker dispatch={dispatch} /> }
       </div>
     </Layout>
   );

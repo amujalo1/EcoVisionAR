@@ -4,8 +4,7 @@ import "leaflet/dist/leaflet.css";
 
 // Haversine formula for distance calculation
 const calculateDistance = (lat1, lon1, lat2, lon2) => {
-  console.log(lon1, lon2, lat1, lat2);
-  const R = 6371; // Earth radius in km
+  const R = 6371; // Earth radius in 
   const dLat = ((lat2 - lat1) * Math.PI) / 180;
   const dLon = ((lon2 - lon1) * Math.PI) / 180;
   const a =
@@ -21,9 +20,6 @@ const calculateDistance = (lat1, lon1, lat2, lon2) => {
 const GPSTracker = ({ dispatch }) => {
   const [positions, setPositions] = useState([]);
   const [distance, setDistance] = useState(0);
-
-  console.log(positions);
-  console.log(distance);
 
   useEffect(() => {
     if ("geolocation" in navigator) {
@@ -71,8 +67,11 @@ const GPSTracker = ({ dispatch }) => {
                 dispatch({
                   type: "INCREMENT",
                   activity,
-                  minutes: dist / speedFactor,
+                  minutes: Math.round((dist / speedFactor) * 100) / 100, // Ograničeno na 2 decimalna mesta
                 });
+
+                // Refresh page after updating
+                window.location.reload();
               }
             }
 
