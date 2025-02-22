@@ -1,11 +1,10 @@
-import { useEffect, useReducer } from "react";
+import { useEffect, useReducer, useState } from "react";
 import ActivityTab from "../components/ActivityTab";
 import DailyQuest from "../components/DailyQuest";
-import GPSTracker from "../components/GPSTracker"; // Importujemo GPSTracker
-import { getUserById } from "../api/api";
+import GPSTracker from "../components/GPSTracker";
+import { getUserById, updateDailyActivity } from "../api/api";
 import TopBar from "../components/TopBar";
 import BottomBar from "../components/BottomBar";
-import { updateDailyActivity } from "../api/api";
 
 const dailyQuests = [
   { activity: "walking", minutes: 30 },
@@ -20,7 +19,7 @@ const CO2_EMISSIONS = {
   transport: -0.3,
 };
 
-const initialState = {
+const defaultState = {
   walking: 0,
   running: 0,
   biking: 0,
@@ -39,9 +38,10 @@ function reducer(state, action) {
         totalCO2: state.totalCO2 + co2Impact,
       };
     }
-    case "RESET": {
-      return initialState;
-    }
+    case "RESET":
+      return defaultState;
+    case "SET_INITIAL_STATE":
+      return action.payload;
     default:
       return state;
   }
@@ -49,33 +49,35 @@ function reducer(state, action) {
 
 function ActivityPage() {
   const userId = localStorage.getItem("id");
-  const user = async function getUser(userId) {
-    try {
-      const response = await getUserById(userId);
-      console.log("Usern:", response);
-    } catch (error) {
-      console.error("error:", error);
-      setErrorMessage("error");
-    }
-  };
-  const testGetUserById = async () => {
-    const userId = "67b9c5538e0a057632c82b75"; // replace with the actual user ID you want to test
-    try {
-      const user = await getUserById(userId);
-      return user.dailyActivity;
-    } catch (err) {
-      console.error("Error fetching user:", err);
-    }
-  };
-
-  const newState = testGetUserById();
-
-  console.log(userId);
-  const [state, dispatch] = useReducer(reducer, initialState);
+  const [state, dispatch] = useReducer(reducer, defaultState);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    updateDailyActivity(userId, state);
-  }, [state, userId]);
+    if (!userId) return;
+
+    getUserById(userId)
+      .then((user) => {
+        dispatch({
+          type: "SET_INITIAL_STATE",
+          payload: user.dailyActivity || defaultState,
+        });
+        setLoading(false);
+      })
+      .catch((error) => {
+        console.error("Greška pri dohvaćanju korisnika:", error);
+        setLoading(false);
+      });
+  }, [userId]);
+
+  useEffect(() => {
+    if (!loading && userId) {
+      updateDailyActivity(userId, state);
+    }
+  }, [state, userId, loading]);
+
+  if (loading) {
+    return <p>Učitavanje podataka...</p>;
+  }
 
   return (
     <>
@@ -83,7 +85,7 @@ function ActivityPage() {
       <div className="flex">
         <ActivityTab state={state} dispatch={dispatch} />
         <DailyQuest quests={dailyQuests} currentState={state} />
-        <GPSTracker dispatch={dispatch} /> {/* Dodajemo GPS komponentu */}
+        <GPSTracker dispatch={dispatch} />
       </div>
       <BottomBar />
     </>
