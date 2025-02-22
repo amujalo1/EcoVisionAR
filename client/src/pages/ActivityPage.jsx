@@ -1,7 +1,11 @@
-import { useReducer } from "react";
+import { useEffect, useReducer } from "react";
 import ActivityTab from "../components/ActivityTab";
 import DailyQuest from "../components/DailyQuest";
 import GPSTracker from "../components/GPSTracker"; // Importujemo GPSTracker
+import { getUserById } from "../api/api";
+import TopBar from "../components/TopBar";
+import BottomBar from "../components/BottomBar";
+import { updateDailyActivity } from "../api/api";
 
 const dailyQuests = [
   { activity: "walking", minutes: 30 },
@@ -55,7 +59,7 @@ function ActivityPage() {
     }
   };
   const testGetUserById = async () => {
-    const userId = localStorage.getItem("id"); // replace with the actual user ID you want to test
+    const userId = "67b9c5538e0a057632c82b75"; // replace with the actual user ID you want to test
     try {
       const user = await getUserById(userId);
       return user.dailyActivity;

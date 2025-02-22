@@ -1,49 +1,54 @@
-require("dotenv").config({ path: ".env" }); // ⬅️ Ispravan put do .env
+require("dotenv").config({ path: ".env" });
 
 const express = require("express");
 const mongoose = require("mongoose");
-const cors = require("cors"); // ⬅️ Dodano uvoz CORS paketa
+const cors = require("cors");
 const userRoutes = require("./routes/userRoutes");
 
 const app = express();
 
-// ⬅️ Omogućava CORS za sve izvore, možeš ograničiti na specifične domene
+// Omogućavanje CORS-a eksplicitno za frontend
 app.use(
   cors({
-    origin: "http://localhost:5173", // Dodaj tvoju frontend domenu ovde, npr. React aplikaciju
-    methods: ["GET", "POST", "PUT", "DELETE"], // Dopuštanje HTTP metoda
-    allowedHeaders: ["Content-Type", "Authorization"], // Dopuštanje specifičnih zaglavlja
+    origin: "http://localhost:5173", // Postavi frontend URL
+    methods: ["GET", "POST", "PUT", "DELETE"], // Dozvoljene metode
+    allowedHeaders: ["Content-Type", "Authorization"], // Dozvoljena zaglavlja
+    credentials: true, // Omogućava slanje cookies/tokena
   })
 );
 
-app.use(express.json()); // ⬅️ Omogućava parsiranje JSON zahtjeva
+app.use(express.json()); // Omogućava parsiranje JSON zahtjeva
 
-// 📌 Provjera da li je MONGO_URI definisan
+// Omogućavanje preflight zahtjeva za sve rute
+app.options("*", cors());
+
+// Provjera da li je MONGO_URI definisan
 if (!process.env.MONGO_URI) {
   console.error("❌ MONGO_URI nije definisan u .env datoteci!");
-  process.exit(1); // ⬅️ Zaustavi aplikaciju ako nema konekcije
+  process.exit(1);
 }
 
-// 🔗 Konekcija s MongoDB
+// Konekcija s MongoDB
 mongoose
   .connect(process.env.MONGO_URI, {
     useNewUrlParser: true,
-    serverSelectionTimeoutMS: 30000, // ⬅️ Povećan timeout na 30 sekundi
+    useUnifiedTopology: true,
+    serverSelectionTimeoutMS: 30000, // Timeout povećan na 30 sekundi
   })
   .then(() => console.log("✅ Povezano s MongoDB"))
   .catch((err) => {
     console.error("❌ Greška pri povezivanju s MongoDB:", err);
-    process.exit(1); // ⬅️ Zaustavi aplikaciju ako konekcija ne uspije
+    process.exit(1);
   });
 
-// 📌 Povezivanje ruta
+// Povezivanje ruta
 app.use("/api/users", userRoutes);
 
-// ✅ Test ruta
+// Test ruta
 app.get("/", (req, res) => {
   res.send("🚀 Eko aplikacija API radi!");
 });
 
-// 🌍 Pokretanje servera
-const PORT = process.env.PORT || 5555;
+// Pokretanje servera
+const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => console.log(`🚀 Server pokrenut na portu ${PORT}`));
