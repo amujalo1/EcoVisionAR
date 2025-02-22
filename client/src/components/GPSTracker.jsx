@@ -4,7 +4,7 @@ import "leaflet/dist/leaflet.css";
 
 // Haversine formula for distance calculation
 const calculateDistance = (lat1, lon1, lat2, lon2) => {
-  console.log(lon1, lon2, lat1, lat2);
+  // console.log(lon1, lon2, lat1, lat2);
   const R = 6371; // Earth radius in km
   const dLat = ((lat2 - lat1) * Math.PI) / 180;
   const dLon = ((lon2 - lon1) * Math.PI) / 180;
@@ -22,8 +22,8 @@ const GPSTracker = ({ dispatch }) => {
   const [positions, setPositions] = useState([]);
   const [distance, setDistance] = useState(0);
 
-  console.log(positions);
-  console.log(distance);
+  // console.log(positions);
+  // console.log(distance);
 
   useEffect(() => {
     if ("geolocation" in navigator) {
@@ -35,21 +35,30 @@ const GPSTracker = ({ dispatch }) => {
             if (prevPositions.length > 0) {
               const prev = prevPositions[prevPositions.length - 1];
 
-                // Skip distance calculation if the first four decimals are the same
-                if (
-                  latitude.toFixed(4) === prev.lat.toFixed(4) &&
-                  longitude.toFixed(4) === prev.lng.toFixed(4)
-                ) {
-                  return prevPositions;
-                }
+              // Skip distance calculation if the first four decimals are the same
+              if (
+                latitude.toFixed(4) === prev.lat.toFixed(4) &&
+                longitude.toFixed(4) === prev.lng.toFixed(4)
+              ) {
+                return prevPositions;
+              }
 
-                const dist = calculateDistance(prev.lat, prev.lng, latitude, longitude);
-                
+              const dist = calculateDistance(
+                prev.lat,
+                prev.lng,
+                latitude,
+                longitude
+              );
+
               if (dist > 1) {
                 setDistance((prevDistance) => prevDistance + dist);
 
                 // ✅ Dispatch walking time update (assuming 80 meters ≈ 1 min walking)
-                dispatch({ type: "INCREMENT", activity: "walking", minutes: dist / 80 });
+                dispatch({
+                  type: "INCREMENT",
+                  activity: "walking",
+                  minutes: dist / 80,
+                });
               }
             }
             return [...prevPositions, { lat: latitude, lng: longitude }];
@@ -73,7 +82,11 @@ const GPSTracker = ({ dispatch }) => {
       <p>Distance Walked: {distance.toFixed(2)} meters</p>
 
       {positions.length > 0 ? (
-        <MapContainer center={positions[0]} zoom={18} style={{ height: "400px", width: "100%" }}>
+        <MapContainer
+          center={positions[0]}
+          zoom={18}
+          style={{ height: "400px", width: "100%" }}
+        >
           <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
           <Polyline positions={positions} color="green" />
           <Marker position={positions[positions.length - 1]} />
