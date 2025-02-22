@@ -1,6 +1,8 @@
 import { useReducer } from "react";
 import ActivityTab from "../components/ActivityTab";
 import DailyQuest from "../components/DailyQuest";
+import GPSTracker from "../components/GPSTracker"; // Importujemo GPSTracker
+
 const dailyQuests = [
   { activity: "walking", minutes: 30 },
   { activity: "running", minutes: 20 },
@@ -13,7 +15,8 @@ const CO2_EMISSIONS = {
   biking: -0.1,
   transport: -0.05,
 };
-const initialState = { // atom ({walking:0...})
+
+const initialState = {
   walking: 0,
   running: 0,
   biking: 0,
@@ -41,14 +44,13 @@ function reducer(state, action) {
 }
 
 function ActivityPage() {
-  const [state, dispatch] = useReducer(reducer, initialState); // useReducerAtom , JOTAI
+  const [state, dispatch] = useReducer(reducer, initialState);
+  
   return (
     <div className="flex">
       <ActivityTab state={state} dispatch={dispatch} />
-      <DailyQuest
-        quests={dailyQuests}
-        currentState={state} // state iz ActivityTab komponente
-      />
+      <DailyQuest quests={dailyQuests} currentState={state} />
+      <GPSTracker dispatch={dispatch} /> {/* Dodajemo GPS komponentu */}
     </div>
   );
 }
