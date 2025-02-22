@@ -7,6 +7,7 @@ const CO2_EMISSIONS = {
   transport: -0.3,
 };
 
+// Default state za dnevnu aktivnost
 const defaultState = {
   walking: 0,
   running: 0,
@@ -15,6 +16,7 @@ const defaultState = {
   totalCO2: 6.9,
 };
 
+// Reducer funkcija za update state-a
 const reducer = (state, action) => {
   switch (action.type) {
     case "INCREMENT": {
@@ -35,9 +37,21 @@ const reducer = (state, action) => {
   }
 };
 
+// Atom za čuvanje korisničkog state-a
 export const stateAtom = atom(defaultState);
 export const dispatchAtom = atom(null, (get, set, action) => {
   const state = get(stateAtom);
   const newState = reducer(state, action);
   set(stateAtom, newState);
+});
+
+// 🌟 Novi atom za korisničke podatke
+export const userAtom = atom({
+  username: "",
+  streak: 0,
+  experience: 0,
+  points: 0,
+  level: 1,
+  friends: [],
+  quests: [],
 });
