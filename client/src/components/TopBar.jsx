@@ -14,29 +14,31 @@ const getStreakIcon = (streak) => {
 
 const TopBar = ({ streak }) => {
   return (
-    <div className="fixed top-0 left-0 right-0 bg-white text-black flex justify-between items-center py-3 px-6 shadow-md border-b border-gray-200 z-10">
-      {/* Points Section */}
-      <div className="flex items-center space-x-2">
+    <div className="fixed top-0 left-0 right-0 bg-white text-black flex items-center justify-between py-3 px-6 shadow-md border-b border-gray-200 z-10">
+      {/* Left Section - Points */}
+      <div className="flex items-center gap-3">
         <span className="font-semibold">Points:</span>
-        <span className="bg-green-500 px-4 py-1.5 rounded-full text-sm font-medium shadow-md">
+        <span className="bg-green-500 text-white px-4 py-1.5 rounded-full text-sm font-medium shadow-md">
           100
         </span>
       </div>
 
-      {/* Logo Section */}
-      <div className="flex justify-center items-center">
-        <img src={logo} alt="Logo" className="w-15 h-15 object-contain" />
+      {/* Center Section - Logo */}
+      <div className="flex-1 flex justify-center">
+        <img src={logo} alt="Logo" className="h-12 object-contain" />
       </div>
 
-      {/* Streak Section */}
-      <div className="flex items-center space-x-2">
-        {getStreakIcon(streak)}
-        <span className="font-semibold">Streak:</span>
-        <span className="bg-yellow-500 px-3 py-1.5 rounded-full text-sm font-medium shadow-md">
-          {streak}
-        </span>
+      {/* Right Section - Streak and Logout */}
+      <div className="flex items-center gap-4">
+        <div className="flex items-center gap-2">
+          {getStreakIcon(streak)}
+          <span className="font-semibold">Streak:</span>
+          <span className="bg-yellow-500 text-white px-3 py-1.5 rounded-full text-sm font-medium shadow-md">
+            {streak}
+          </span>
+        </div>
+        <LogoutButton />
       </div>
-      <LogoutButton />
     </div>
   );
 };

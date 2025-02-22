@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import ActivityIcon from "./ActivityIcon";
 import ActivityForm from "./ActivityForm";
-import { RadialBarChart, RadialBar, Legend } from "recharts";
+import ReactApexChart from "react-apexcharts";
 
 const CO2_EMISSIONS = {
   walking: -0.1,
@@ -10,7 +10,7 @@ const CO2_EMISSIONS = {
   transport: 0.3,
 };
 
-const ActivityTab = ({ state, dispatch }) => {
+const ActivityTab = ({ state = {}, dispatch }) => {
   const [selectedActivity, setSelectedActivity] = useState(null);
 
   const handleActivityClick = (activity) => {
@@ -25,63 +25,86 @@ const ActivityTab = ({ state, dispatch }) => {
     setSelectedActivity(null);
   };
 
-  const totalCO2 = state.totalCO2.toFixed(2);
-  console.log(totalCO2);
-  const co2Percentage = Math.min(Math.max(state.totalCO2 / 10, 0), 1) * 100;
+  const totalCO2 = Number(state?.totalCO2?.toFixed(2)) || 0;
 
-  // Promjena boje na osnovu totalCO2 vrijednosti
-  const getColor = (value) => {
-    if (value < -0.5) return "#2ECC71"; // Zeleno za veoma nizak CO2
-    if (value < 0) return "#F1C40F"; // Žuto za umjerene vrijednosti
-    return "#E74C3C"; // Crveno za visoke vrijednosti
+  console.log("Current state:", state);
+
+  const getArrowColor = (value) => {
+    if (value < -0.5) return "#2ECC71"; // Zeleno
+    if (value < 0) return "#F1C40F"; // Žuto
+    return "#E74C3C"; // Crveno
   };
 
-  // Podaci za grafikon
-  const data = [
-    { name: "CO2 Impact", value: totalCO2, fill: getColor(totalCO2) },
-  ];
+  // Proračun ugla strelice (od -90 do 90 stepeni)
+  const arrowAngle = Math.min(Math.max(totalCO2 * 90, -90), 90);
 
   return (
     <div className="p-6 max-w-2xl mx-auto bg-slate-300 rounded-2xl">
       <div className="text-center mb-6">
         <div className="text-lg font-semibold">Total CO2 Impact</div>
-        <div className="text-2xl font-bold text-gray-800">
-          {totalCO2} kg CO2
+        <div className="text-2xl font-bold text-gray-800">{totalCO2} kg CO2</div>
+      </div>
+
+      <div className="flex flex-col items-center mb-8 relative">
+        <ReactApexChart
+          options={{
+            chart: { type: "donut" },
+            plotOptions: {
+              pie: {
+                startAngle: -90, // Početni ugao (vertikalno)
+                endAngle: 90, // Krajnji ugao (vertikalno)
+                offsetY: 10, // Pomeranje grafikona prema gore
+                donut: {
+                  labels: {
+                    show: false, // Sakrij labele
+                  },
+                },
+              },
+            },
+            colors: ["#2ECC71", "#F1C40F", "#E74C3C"], // Boje za Low, Moderate, High
+            labels: ["Low", "Moderate", "High"],
+            grid: { padding: { bottom: -100 } }, // Smanji padding za bolji izgled
+            legend: { show: false }, // Sakrij legendu
+            dataLabels: { enabled: false }, // Sakrij procente na grafikonu
+          }}
+          series={[33.3, 33.3, 33.3]} // Jednake sekcije
+          type="donut"
+          height={200}
+        />
+
+        {/* Strelica */}
+        <div
+          className="absolute top-[85%] left-1/2 transform -translate-x-1/2 -translate-y-1/2 align-middle item"
+          style={{
+            transform: `translate(-50%, -50%) rotate(${arrowAngle}deg)`,
+            transition: "transform 0.3s ease-in-out",
+          }}
+        >
+          <div
+            className="w-0 h-0 border-l-8 border-r-8 border-b-[20px] border-transparent mx-auto"
+            style={{
+              borderBottomColor: getArrowColor(totalCO2),
+            }}
+          />
         </div>
       </div>
 
-      <div className="flex justify-center mb-8">
-        <RadialBarChart
-          width={250}
-          height={250}
-          innerRadius="80%"
-          outerRadius="100%"
-          data={data}
-          startAngle={90}
-          endAngle={-270}
-        >
-          <RadialBar
-            minAngle={15}
-            label={{ position: "insideStart", fill: "#111" }}
-            background
-            dataKey="value"
-          />
-          <Legend iconSize={10} layout="vertical" verticalAlign="middle" />
-        </RadialBarChart>
-      </div>
-
       <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
-        {Object.keys(CO2_EMISSIONS).map((activity) => (
-          <ActivityIcon
-            key={activity}
-            activity={activity}
-            count={state[activity]}
-            onClick={() => handleActivityClick(activity)}
-          />
-        ))}
+        {CO2_EMISSIONS && typeof CO2_EMISSIONS === "object" ? (
+          Object.entries(CO2_EMISSIONS).map(([activity, value]) => (
+            <ActivityIcon
+              key={activity}
+              activity={activity}
+              count={state?.[activity] ?? 0}
+              onClick={() => handleActivityClick(activity)}
+            />
+          ))
+        ) : (
+          <p>Loading activities...</p>
+        )}
       </div>
 
-      {state.totalCO2 !== 0 && (
+      {totalCO2 !== 0 && (
         <button
           onClick={() => dispatch({ type: "RESET" })}
           className="mt-6 px-4 py-2 bg-gray-200 rounded-lg hover:bg-gray-300 transition-colors"
