@@ -1,7 +1,8 @@
 import LiquidGauge from "./LiquidGauge";
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import ActivityIcon from "./ActivityIcon";
 import ActivityForm from "./ActivityForm";
+
 const ActivityTab = ({ state = {}, dispatch }) => {
   const CO2_EMISSIONS = {
     walking: -0.1,
@@ -12,11 +13,17 @@ const ActivityTab = ({ state = {}, dispatch }) => {
   const [selectedActivity, setSelectedActivity] = useState(null);
   const totalCO2 = Number(state?.totalCO2?.toFixed(2)) || 0;
 
+  const getColor = (value) => {
+    if (value > 0) return "red";
+    if (value >= -1) return "yellow";
+    return "green";
+  };
+
   return (
     <div className="min-h-screen bg-gray-50">
       <div className="max-w-4xl mx-auto px-4">
         <div className="mb-8">
-          <LiquidGauge value={totalCO2} />
+          <LiquidGauge value={totalCO2} fillColor={getColor()} />
         </div>
 
         <div className="grid grid-cols-2 md:grid-cols-2 gap-4 mb-8">
