@@ -10,7 +10,7 @@ const app = express();
 // Omogućavanje CORS-a eksplicitno za frontend
 app.use(
   cors({
-    origin: "http://localhost:5173", // Postavi frontend URL
+    //origin: "http://localhost:5173", // Postavi frontend URL
     methods: ["GET", "POST", "PUT", "DELETE"], // Dozvoljene metode
     allowedHeaders: ["Content-Type", "Authorization"], // Dozvoljena zaglavlja
     credentials: true, // Omogućava slanje cookies/tokena
