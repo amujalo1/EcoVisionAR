@@ -12,10 +12,10 @@ const cors = require("cors");
 // Add this before your routes
 app.use(
   cors({
-    origin: "http://localhost:5173",
-    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"], // Added OPTIONS
-    allowedHeaders: ["Content-Type", "Authorization"],
-    credentials: true,
+    //origin: "http://localhost:5173", // Postavi frontend URL
+    methods: ["GET", "POST", "PUT", "DELETE"], // Dozvoljene metode
+    allowedHeaders: ["Content-Type", "Authorization"], // Dozvoljena zaglavlja
+    credentials: true, // Omogućava slanje cookies/tokena
   })
 );
 

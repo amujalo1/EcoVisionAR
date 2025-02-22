@@ -1,47 +1,45 @@
-import React, { act } from "react";
 import { FaWalking, FaRunning, FaBicycle, FaTram } from "react-icons/fa";
-
-const CO2_EMISSIONS = {
-  walking: -0.1, // Example value, in kg CO2 per minute
-  running: -0.15, // Example value, in kg CO2 per minute
-  biking: -0.1, // Example value, in kg CO2 per minute
-  transport: -0.05, // Example value for an average car, in kg CO2 per minute
-};
-
-const calculateCO2 = (activity, minutes) => {
-  return CO2_EMISSIONS[activity] * minutes;
-};
-
-const ActivityIcon = ({ activity, onClick, count }) => {
+const ActivityIcon = ({ activity, count, onClick }) => {
   const icons = {
     walking: FaWalking,
     running: FaRunning,
     biking: FaBicycle,
     transport: FaTram,
   };
-
+  const CO2_EMISSIONS = {
+    walking: -0.1,
+    running: -0.15,
+    biking: -0.1,
+    transport: -0.3,
+  };
   const Icon = icons[activity];
-  const isGreen = CO2_EMISSIONS[activity] < 0;
-  const bgColor = isGreen ? "bg-green-300" : "bg-red-300";
-  const hoverBg = isGreen ? "hover:bg-green-400" : "hover:bg-red-400";
+  const impact = CO2_EMISSIONS[activity];
+  const isGreen = impact < 0;
 
   return (
-    <div className="flex flex-col items-center gap-2">
-      <button
-        type="button"
-        className={`p-3 rounded-2xl transition-colors ${bgColor} ${hoverBg} hover:cursor-pointer`}
-        onClick={onClick}
-      >
-        <Icon size={48} />
-      </button>
-      <div className="text-center">
-        <div className="font-medium capitalize">{activity}</div>
-        <div className="text-sm">{count} mins</div>
-        <div className="text-sm">
-          {(count * CO2_EMISSIONS[activity]).toFixed(2)} KG CO2
+    <button
+      onClick={onClick}
+      className="w-full p-4 bg-white rounded-xl shadow-md hover:shadow-lg transition-all duration-200"
+    >
+      <div className="flex flex-col items-center">
+        <div
+          className={`p-4 rounded-full ${
+            isGreen ? "bg-green-100 text-green-600" : "bg-red-100 text-red-600"
+          }`}
+        >
+          <Icon className="w-8 h-8" />
         </div>
+        <span className="mt-2 font-medium capitalize">{activity}</span>
+        <span className="text-sm text-gray-600">{count} mins</span>
+        <span
+          className={`text-sm font-medium ${
+            isGreen ? "text-green-600" : "text-red-600"
+          }`}
+        >
+          {(count * impact).toFixed(2)} kg CO2
+        </span>
       </div>
-    </div>
+    </button>
   );
 };
 

@@ -53,7 +53,6 @@ function ShopPage() {
 
         return (
           <>
-            <TopBar />
             <div key={product.id}>
               {/* Normalna kartica */}
               <motion.div

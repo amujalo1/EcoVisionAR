@@ -2,11 +2,11 @@ import React, { useEffect, useState } from "react";
 import { useAtom } from "jotai";
 import { stateAtom, dispatchAtom } from "../store/store"; // Import atoms
 
+// pages/ActivityPage.js
 import ActivityTab from "../components/ActivityTab";
 import GPSTracker from "../components/GPSTracker";
 import { getUserById, updateDailyActivity } from "../api/api";
-import TopBar from "../components/TopBar";
-import BottomBar from "../components/BottomBar";
+import Layout from "../components/Layout";
 
 const dailyQuests = [
   { activity: "walking", minutes: 30 },
@@ -48,14 +48,12 @@ function ActivityPage() {
   }
 
   return (
-    <>
-      <TopBar />
-      <div className="flex flex-col">
+    <Layout>
+      <div className="flex flex-col h-full">
         <ActivityTab state={state} dispatch={dispatch} />
-        <GPSTracker dispatch={dispatch} />
+        {/* <GPSTracker dispatch={dispatch} /> */}
       </div>
-      <BottomBar />
-    </>
+    </Layout>
   );
 }
 
