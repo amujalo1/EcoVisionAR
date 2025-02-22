@@ -53,11 +53,25 @@ const GPSTracker = ({ dispatch }) => {
               if (dist > 1) {
                 setDistance((prevDistance) => prevDistance + dist);
 
-                // ✅ Dispatch walking time update (assuming 80 meters ≈ 1 min walking)
+                let activity = "walking";
+                let speedFactor = 80; // meters per minute
+
+                if (dist >= 5 && dist < 10) {
+                  activity = "running";
+                  speedFactor = 150;
+                } else if (dist >= 10 && dist < 25) {
+                  activity = "bicycle";
+                  speedFactor = 300;
+                } else if (dist >= 25) {
+                  activity = "tram";
+                  speedFactor = 600;
+                }
+
+                // ✅ Dispatch based on detected activity
                 dispatch({
                   type: "INCREMENT",
-                  activity: "walking",
-                  minutes: dist / 80,
+                  activity,
+                  minutes: dist / speedFactor,
                 });
               }
             }
@@ -78,8 +92,8 @@ const GPSTracker = ({ dispatch }) => {
 
   return (
     <div>
-      <h2>Walking Distance Tracker</h2>
-      <p>Distance Walked: {distance.toFixed(2)} meters</p>
+      <h2>Activity Tracker</h2>
+      <p>Distance Traveled: {distance.toFixed(2)} meters</p>
 
       {positions.length > 0 ? (
         <MapContainer
