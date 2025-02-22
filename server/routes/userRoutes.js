@@ -64,6 +64,20 @@ router.get("/:id", async (req, res) => {
   }
 });
 
+router.get("/username/:username", async (req, res) => {
+  try {
+    const user = await User.findOne({ username: req.params.username }).populate("friends");
+    
+    if (!user) {
+      return res.status(404).json({ message: "Korisnik nije pronađen" });
+    }
+
+    res.json(user);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
 // 📌 Dodaj prijatelja
 router.post("/:id/addFriend", async (req, res) => {
   try {
