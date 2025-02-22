@@ -13,7 +13,7 @@ const CO2_EMISSIONS = {
   biking: -0.1,
   transport: -0.05,
 };
-const initialState = {
+const initialState = { // atom ({walking:0...})
   walking: 0,
   running: 0,
   biking: 0,
@@ -41,7 +41,7 @@ function reducer(state, action) {
 }
 
 function ActivityPage() {
-  const [state, dispatch] = useReducer(reducer, initialState);
+  const [state, dispatch] = useReducer(reducer, initialState); // useReducerAtom , JOTAI
   return (
     <div className="flex">
       <ActivityTab state={state} dispatch={dispatch} />
