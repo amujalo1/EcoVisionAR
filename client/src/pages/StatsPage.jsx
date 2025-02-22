@@ -1,17 +1,30 @@
 import React, { useEffect, useState } from "react";
-import { getUserById } from "../api/api";
+import { getUserById } from "../api/api"; // Make sure the import is correct
 
 const StatsPage = () => {
   const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
+  // Predefined list of user IDs
+  const userIds = [
+    "67b9a55d02d78f72ed0c90b9",
+    "67b9a9b202d78f72ed0c90c8",
+    "67b9c5538e0a057632c82b75",
+    "67b9f898302cd1410ff16587",
+    "67ba30ea78da4abfede2621d",
+    "67ba310578da4abfede26226",
+    "67ba33fb78da4abfede26244"
+  ];
+
   useEffect(() => {
     const fetchUsers = async () => {
       try {
-        const data = await getUserById(localStorage.getItem("id"));
-        console.log(data);
-        const sortedUsers = data.sort((a, b) => b.BioScore - a.BioScore);
+        // Assuming your API endpoint can handle multiple IDs
+        const usersData = await Promise.all(
+          userIds.map(id => getUserById(id)) // Fetch all users by their IDs
+        );
+        const sortedUsers = usersData.sort((a, b) => b.BioScore - a.BioScore);
         setUsers(sortedUsers);
       } catch (err) {
         setError("Failed to load leaderboard");
@@ -19,6 +32,7 @@ const StatsPage = () => {
         setLoading(false);
       }
     };
+    
     fetchUsers();
   }, []);
 
