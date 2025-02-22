@@ -8,6 +8,33 @@ const QuestSchema = new mongoose.Schema({
   completed: { type: Boolean, default: false },
   points: { type: Number, required: true }, // Koliko bodova daje quest
 });
+const dailyActivitySchema = new mongoose.Schema({
+  walking: {
+    type: Number,
+    default: 0,
+    set: (v) => Math.round(v * 100) / 100,
+  },
+  running: {
+    type: Number,
+    default: 0,
+    set: (v) => Math.round(v * 100) / 100,
+  },
+  biking: {
+    type: Number,
+    default: 0,
+    set: (v) => Math.round(v * 100) / 100,
+  },
+  transport: {
+    type: Number,
+    default: 0,
+    set: (v) => Math.round(v * 100) / 100,
+  },
+  totalCO2: {
+    type: Number,
+    default: 6.9,
+    set: (v) => Math.round(v * 100) / 100,
+  },
+});
 
 const UserSchema = new mongoose.Schema({
   username: { type: String, required: true, unique: true },
@@ -18,13 +45,7 @@ const UserSchema = new mongoose.Schema({
 
   friends: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }], // Lista prijatelja (reference)
 
-  dailyActivity: {
-    walking: { type: Number, default: 0 },
-    running: { type: Number, default: 0 },
-    biking: { type: Number, default: 0 },
-    transport: { type: Number, default: 0 },
-    totalCO2: { type: Number, default: 6.9 }, // Početna vrijednost CO2
-  },
+  dailyActivity: dailyActivitySchema,
 
   quests: [QuestSchema], // Lista questova
 });

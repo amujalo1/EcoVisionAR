@@ -2,6 +2,7 @@ import React from "react";
 import { FaSeedling, FaTree, FaLeaf } from "react-icons/fa";
 import { GiTreeGrowth, GiForest } from "react-icons/gi";
 import logo from "/logo.png";
+import LogoutButton from "./LogoutButton";
 
 const getStreakIcon = (streak) => {
   if (streak <= 3) return <FaSeedling className="text-green-400 text-lg" />;
@@ -13,7 +14,7 @@ const getStreakIcon = (streak) => {
 
 const TopBar = ({ streak }) => {
   return (
-    <div className="fixed top-0 left-0 right-0 bg-white text-black flex justify-between items-center py-3 px-6 shadow-md border-b border-gray-200">
+    <div className="fixed top-0 left-0 right-0 bg-white text-black flex justify-between items-center py-3 px-6 shadow-md border-b border-gray-200 z-10">
       {/* Points Section */}
       <div className="flex items-center space-x-2">
         <span className="font-semibold">Points:</span>
@@ -21,18 +22,21 @@ const TopBar = ({ streak }) => {
           100
         </span>
       </div>
-      
+
       {/* Logo Section */}
       <div className="flex justify-center items-center">
         <img src={logo} alt="Logo" className="w-15 h-15 object-contain" />
       </div>
-      
+
       {/* Streak Section */}
       <div className="flex items-center space-x-2">
         {getStreakIcon(streak)}
         <span className="font-semibold">Streak:</span>
-        <span className="bg-yellow-500 px-3 py-1.5 rounded-full text-sm font-medium shadow-md">{streak}</span>
+        <span className="bg-yellow-500 px-3 py-1.5 rounded-full text-sm font-medium shadow-md">
+          {streak}
+        </span>
       </div>
+      <LogoutButton />
     </div>
   );
 };

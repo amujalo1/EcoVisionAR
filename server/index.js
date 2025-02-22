@@ -2,9 +2,20 @@ require("dotenv").config({ path: ".env" }); // ⬅️ Ispravan put do .env
 
 const express = require("express");
 const mongoose = require("mongoose");
+const cors = require("cors"); // ⬅️ Dodano uvoz CORS paketa
 const userRoutes = require("./routes/userRoutes");
 
 const app = express();
+
+// ⬅️ Omogućava CORS za sve izvore, možeš ograničiti na specifične domene
+app.use(
+  cors({
+    origin: "http://localhost:5173", // Dodaj tvoju frontend domenu ovde, npr. React aplikaciju
+    methods: ["GET", "POST", "PUT", "DELETE"], // Dopuštanje HTTP metoda
+    allowedHeaders: ["Content-Type", "Authorization"], // Dopuštanje specifičnih zaglavlja
+  })
+);
+
 app.use(express.json()); // ⬅️ Omogućava parsiranje JSON zahtjeva
 
 // 📌 Provjera da li je MONGO_URI definisan
