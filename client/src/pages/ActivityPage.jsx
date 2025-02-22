@@ -1,10 +1,10 @@
+// pages/ActivityPage.js
 import { useEffect, useReducer, useState } from "react";
 import ActivityTab from "../components/ActivityTab";
 import DailyQuest from "../components/DailyQuest";
 import GPSTracker from "../components/GPSTracker";
 import { getUserById, updateDailyActivity } from "../api/api";
-import TopBar from "../components/TopBar";
-import BottomBar from "../components/BottomBar";
+import Layout from "../components/Layout";
 
 const dailyQuests = [
   { activity: "walking", minutes: 30 },
@@ -80,15 +80,13 @@ function ActivityPage() {
   }
 
   return (
-    <>
-      <TopBar />
-      <div className="flex">
+    <Layout>
+      <div className="flex flex-col h-full">
         <ActivityTab state={state} dispatch={dispatch} />
         <DailyQuest quests={dailyQuests} currentState={state} />
         <GPSTracker dispatch={dispatch} />
       </div>
-      <BottomBar />
-    </>
+    </Layout>
   );
 }
 

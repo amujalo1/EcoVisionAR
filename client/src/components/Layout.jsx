@@ -1,24 +1,21 @@
+// components/Layout.js
 import React from "react";
 import TopBar from "./TopBar";
 import BottomBar from "./BottomBar";
 
 const Layout = ({ children }) => {
   return (
-    <div className="h-screen flex flex-col">
-      {/* Top Bar */}
-      <div className="fixed top-0 left-0 right-0 z-10">
-        <TopBar />
-      </div>
+    <div className="h-screen flex flex-col mx-auto" style={{ maxWidth: "375px", width: "100%" }}>
+      {/* Fiksirani TopBar */}
+      <TopBar />
 
-      {/* Main Content */}
+      {/* Glavni sadržaj s paddingom za TopBar i BottomBar */}
       <main className="flex-1 overflow-y-auto p-4 bg-zinc-500 pt-[4rem] pb-[4rem]">
         {children}
       </main>
 
-      {/* Bottom Bar */}
-      <div className="fixed bottom-0 left-0 right-0 z-10">
-        <BottomBar />
-      </div>
+      {/* Fiksirani BottomBar */}
+      <BottomBar />
     </div>
   );
 };
