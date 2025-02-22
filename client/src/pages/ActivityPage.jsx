@@ -1,7 +1,11 @@
-import { useReducer } from "react";
+import { useEffect, useReducer } from "react";
 import ActivityTab from "../components/ActivityTab";
 import DailyQuest from "../components/DailyQuest";
 import GPSTracker from "../components/GPSTracker"; // Importujemo GPSTracker
+import { getUserById } from "../api/api";
+import TopBar from "../components/TopBar";
+import BottomBar from "../components/BottomBar";
+import { updateDailyActivity } from "../api/api";
 
 const dailyQuests = [
   { activity: "walking", minutes: 30 },
@@ -44,14 +48,45 @@ function reducer(state, action) {
 }
 
 function ActivityPage() {
+  const userId = localStorage.getItem("id");
+  const user = async function getUser(userId) {
+    try {
+      const response = await getUserById(userId);
+      console.log("Usern:", response);
+    } catch (error) {
+      console.error("error:", error);
+      setErrorMessage("error");
+    }
+  };
+  const testGetUserById = async () => {
+    const userId = "67b9c5538e0a057632c82b75"; // replace with the actual user ID you want to test
+    try {
+      const user = await getUserById(userId);
+      return user.dailyActivity;
+    } catch (err) {
+      console.error("Error fetching user:", err);
+    }
+  };
+
+  const newState = testGetUserById();
+
+  console.log(userId);
   const [state, dispatch] = useReducer(reducer, initialState);
 
+  useEffect(() => {
+    updateDailyActivity(userId, state);
+  }, [state, userId]);
+
   return (
-    <div className="flex">
-      <ActivityTab state={state} dispatch={dispatch} />
-      <DailyQuest quests={dailyQuests} currentState={state} />
-      <GPSTracker dispatch={dispatch} /> {/* Dodajemo GPS komponentu */}
-    </div>
+    <>
+      <TopBar />
+      <div className="flex">
+        <ActivityTab state={state} dispatch={dispatch} />
+        <DailyQuest quests={dailyQuests} currentState={state} />
+        <GPSTracker dispatch={dispatch} /> {/* Dodajemo GPS komponentu */}
+      </div>
+      <BottomBar />
+    </>
   );
 }
 

@@ -91,28 +91,26 @@ router.post("/:id/addFriend", async (req, res) => {
 // 📌 Ažuriraj dnevne aktivnosti i izračunaj totalCO2
 router.put("/:id/dailyActivity", async (req, res) => {
   try {
-    const { activity, minutes } = req.body;
+    const state = req.body;
     const user = await User.findById(req.params.id);
 
-    console.log(activity, minutes);
-
+    console.log(state);
     if (!user) {
       return res.status(404).json({ message: "Korisnik nije pronađen" });
     }
-
     // Provjera je li aktivnost validna
-    const validActivities = ["walking", "running", "biking", "transport"];
-    if (!validActivities.includes(activity)) {
-      return res.status(400).json({ message: "Neispravna aktivnost" });
-    }
+    // const validActivities = ["walking", "running", "biking", "transport"];
+    // if (!state.dailyActivity.includes(activity)) {
+    //   return res.status(400).json({ message: "Neispravna aktivnost" });
+    // }
 
     // Provjera je li broj minuta validan
-    if (typeof minutes !== "number" || minutes <= 0) {
-      return res.status(400).json({ message: "Neispravan broj minuta" });
-    }
+    // if (typeof minutes !== "number" || minutes <= 0) {
+    //   return res.status(400).json({ message: "Neispravan broj minuta" });
+    // }
 
     // Ažuriraj aktivnost
-    user.dailyActivity[activity] += minutes;
+    user.dailyActivity = { ...state };
 
     // Definiraj faktor CO2 za svaku aktivnost (kg CO2 po minuti)
     const co2Factors = {

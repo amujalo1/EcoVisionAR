@@ -11,7 +11,6 @@ const BottomBar = () => {
       <NavLink
         to="/calculate"
         className="flex flex-col items-center text-gray-500 transition-all duration-300 hover:text-green-500"
-        activeClassName="text-green-600"
       >
         <FaCalculator className="text-xl transition-transform duration-300 hover:scale-110" />
         <span className="text-xs mt-1">Calc</span>
@@ -19,7 +18,6 @@ const BottomBar = () => {
       <NavLink
         to="/activity"
         className="flex flex-col items-center text-gray-500 transition-all duration-300 hover:text-green-500"
-        activeClassName="text-green-600"
       >
         <LuSquareActivity className="text-xl transition-transform duration-300 hover:scale-110" />
         <span className="text-xs mt-1">Activity</span>
@@ -27,7 +25,6 @@ const BottomBar = () => {
       <NavLink
         to="/stats"
         className="flex flex-col items-center text-gray-500 transition-all duration-300 hover:text-green-500"
-        activeClassName="text-green-600"
       >
         <IoStatsChart className="text-xl transition-transform duration-300 hover:scale-110" />
         <span className="text-xs mt-1">Stats</span>
@@ -35,7 +32,6 @@ const BottomBar = () => {
       <NavLink
         to="/shop"
         className="flex flex-col items-center text-gray-500 transition-all duration-300 hover:text-green-500"
-        activeClassName="text-green-600"
       >
         <FaShoppingCart className="text-xl transition-transform duration-300 hover:scale-110" />
         <span className="text-xs mt-1">Shop</span>
