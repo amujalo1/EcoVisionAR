@@ -13,7 +13,7 @@ const CO2_EMISSIONS = {
   walking: -0.1,
   running: -0.15,
   biking: -0.1,
-  transport: -0.05,
+  transport: -0.3,
 };
 
 const initialState = {
