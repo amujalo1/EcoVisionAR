@@ -1,42 +1,13 @@
-import React, { useReducer, useState } from "react";
+import React, { useState } from "react";
 import ActivityIcon from "./ActivityIcon";
 import ActivityForm from "./ActivityForm";
-
 const CO2_EMISSIONS = {
   walking: -0.1,
   running: -0.15,
   biking: -0.05,
-  driving: 0.3,
+  transport: 0.3,
 };
-const initialState = {
-  walking: 0,
-  running: 0,
-  biking: 0,
-  driving: 0,
-  totalCO2: 0,
-};
-
-function reducer(state, action) {
-  switch (action.type) {
-    case "INCREMENT": {
-      const newMinutes = state[action.activity] + Number(action.minutes);
-      const co2Impact = CO2_EMISSIONS[action.activity] * Number(action.minutes);
-      return {
-        ...state,
-        [action.activity]: newMinutes,
-        totalCO2: state.totalCO2 + co2Impact,
-      };
-    }
-    case "RESET": {
-      return initialState;
-    }
-    default:
-      return state;
-  }
-}
-
-const ActivityTab = () => {
-  const [state, dispatch] = useReducer(reducer, initialState);
+const ActivityTab = ({ state, dispatch }) => {
   const [selectedActivity, setSelectedActivity] = useState(null);
 
   const handleActivityClick = (activity) => {
@@ -55,7 +26,7 @@ const ActivityTab = () => {
   const co2Color = state.totalCO2 < 0 ? "text-green-600" : "text-red-600";
 
   return (
-    <div className="p-6 max-w-2xl mx-auto m-12">
+    <div className="p-6 max-w-2xl mx-auto bg-slate-300 rounded-2xl">
       <div className="text-center mb-12">
         <div className="text-lg font-semibold">Total CO2 Impact</div>
         <div className={`text-2xl font-bold ${co2Color}`}>

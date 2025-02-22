@@ -1,11 +1,11 @@
 import React, { act } from "react";
-import { FaWalking, FaRunning, FaBicycle, FaCar } from "react-icons/fa";
+import { FaWalking, FaRunning, FaBicycle, FaTram } from "react-icons/fa";
 
 const CO2_EMISSIONS = {
   walking: -0.1, // Example value, in kg CO2 per minute
   running: -0.15, // Example value, in kg CO2 per minute
-  biking: -0.05, // Example value, in kg CO2 per minute
-  driving: 0.3, // Example value for an average car, in kg CO2 per minute
+  biking: -0.1, // Example value, in kg CO2 per minute
+  transport: -0.05, // Example value for an average car, in kg CO2 per minute
 };
 
 const calculateCO2 = (activity, minutes) => {
@@ -17,7 +17,7 @@ const ActivityIcon = ({ activity, onClick, count }) => {
     walking: FaWalking,
     running: FaRunning,
     biking: FaBicycle,
-    driving: FaCar,
+    transport: FaTram,
   };
 
   const Icon = icons[activity];
@@ -29,7 +29,7 @@ const ActivityIcon = ({ activity, onClick, count }) => {
     <div className="flex flex-col items-center gap-2">
       <button
         type="button"
-        className={`p-3 rounded-2xl transition-colors ${bgColor} ${hoverBg}`}
+        className={`p-3 rounded-2xl transition-colors ${bgColor} ${hoverBg} hover:cursor-pointer`}
         onClick={onClick}
       >
         <Icon size={48} />

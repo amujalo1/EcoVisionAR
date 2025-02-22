@@ -9,7 +9,7 @@ const Layout = ({ children }) => {
       <TopBar />
 
       {/* Main Content */}
-      <main className="flex-1 overflow-y-auto p-4">{children}</main>
+      <main className="flex-1 overflow-y-auto p-4 bg-zinc-500">{children}</main>
 
       {/* Bottom Bar */}
       <BottomBar />
