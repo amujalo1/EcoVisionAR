@@ -1,10 +1,6 @@
-const LiquidGauge = ({ value }) => {
+const LiquidGauge = ({ value, fillColor }) => {
   const normalizedValue = Math.min(Math.max((value + 1) / 2, 0), 1); // Normalize between 0 and 1
   const fillHeight = `${(1 - normalizedValue) * 100}%`;
-  const color =
-    value <= 0
-      ? `rgb(${120 + value * -120}, 200, 120)` // More negative = more green
-      : `rgb(200, ${200 - value * 100}, 120)`; // More positive = more red
 
   return (
     <div className="relative w-48 h-48 mx-auto mt-8">
@@ -13,7 +9,7 @@ const LiquidGauge = ({ value }) => {
           className="absolute bottom-0 w-full transition-all duration-1000 ease-in-out"
           style={{
             height: fillHeight,
-            background: color,
+            background: fillColor,
             transition: "all 0.5s ease-in-out",
           }}
         />

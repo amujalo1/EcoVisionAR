@@ -8,7 +8,13 @@ import {
   FaMedal,
 } from "react-icons/fa";
 
-const DailyQuest = ({ quests, currentState }) => {
+const MonthlyQuest = ({ currentState }) => {
+  const monthlyQuests = [
+    { activity: "walking", minutes: 600, points: 500 },
+    { activity: "running", minutes: 500, points: 450 },
+    { activity: "biking", minutes: 800, points: 600 },
+  ];
+
   const getIcon = (activity) => {
     const icons = {
       walking: FaWalking,
@@ -16,7 +22,6 @@ const DailyQuest = ({ quests, currentState }) => {
       biking: FaBicycle,
       transport: FaCar,
     };
-
     return icons[activity] || FaMedal;
   };
 
@@ -33,11 +38,11 @@ const DailyQuest = ({ quests, currentState }) => {
     <div className="bg-zinc-100 rounded-lg shadow-lg p-3 max-w-2xl mx-auto">
       <div className="flex items-center gap-2 mb-4">
         <FaTrophy className="text-yellow-500 text-2xl" />
-        <h2 className="text-xl font-bold">Daily Quests</h2>
+        <h2 className="text-xl font-bold">Monthly Quests</h2>
       </div>
 
       <div className="space-y-4">
-        {quests.map((quest, index) => {
+        {monthlyQuests.map((quest, index) => {
           const Icon = getIcon(quest.activity);
           const progress = calculateProgress(quest);
           const completed = isQuestCompleted(quest);
@@ -75,7 +80,7 @@ const DailyQuest = ({ quests, currentState }) => {
                   </div>
                 </div>
 
-                {/* Dijamanti i broj bodova */}
+                {/* Poeni i 🌱 ikonica */}
                 <div className="flex items-center gap-1 text-black font-bold text-lg">
                   <span>{quest.points}</span>
                   <span>🌱</span>
@@ -107,4 +112,4 @@ const DailyQuest = ({ quests, currentState }) => {
   );
 };
 
-export default DailyQuest;
+export default MonthlyQuest;
