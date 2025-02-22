@@ -45,7 +45,7 @@ function reducer(state, action) {
 
 function ActivityPage() {
   const [state, dispatch] = useReducer(reducer, initialState);
-  
+
   return (
     <div className="flex">
       <ActivityTab state={state} dispatch={dispatch} />

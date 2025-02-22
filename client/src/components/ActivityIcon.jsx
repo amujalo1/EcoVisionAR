@@ -37,7 +37,9 @@ const ActivityIcon = ({ activity, onClick, count }) => {
       <div className="text-center">
         <div className="font-medium capitalize">{activity}</div>
         <div className="text-sm">{count} mins</div>
-        <div className="text-sm">{count * CO2_EMISSIONS[activity]} KG CO2</div>
+        <div className="text-sm">
+          {(count * CO2_EMISSIONS[activity]).toFixed(2)} KG CO2
+        </div>
       </div>
     </div>
   );
