@@ -35,21 +35,35 @@ const GPSTracker = ({ dispatch }) => {
             if (prevPositions.length > 0) {
               const prev = prevPositions[prevPositions.length - 1];
 
-                // Skip distance calculation if the first four decimals are the same
-                if (
-                  latitude.toFixed(4) === prev.lat.toFixed(4) &&
-                  longitude.toFixed(4) === prev.lng.toFixed(4)
-                ) {
-                  return prevPositions;
-                }
+              // Skip distance calculation if the first four decimals are the same
+              if (
+                latitude.toFixed(4) === prev.lat.toFixed(4) &&
+                longitude.toFixed(4) === prev.lng.toFixed(4)
+              ) {
+                return prevPositions;
+              }
 
-                const dist = calculateDistance(prev.lat, prev.lng, latitude, longitude);
-                
+              const dist = calculateDistance(prev.lat, prev.lng, latitude, longitude);
+
               if (dist > 1) {
                 setDistance((prevDistance) => prevDistance + dist);
 
-                // ✅ Dispatch walking time update (assuming 80 meters ≈ 1 min walking)
-                dispatch({ type: "INCREMENT", activity: "walking", minutes: dist / 80 });
+                let activity = "walking";
+                let speedFactor = 80; // meters per minute
+
+                if (dist >= 5 && dist < 10) {
+                  activity = "running";
+                  speedFactor = 150;
+                } else if (dist >= 10 && dist < 25) {
+                  activity = "bicycle";
+                  speedFactor = 300;
+                } else if (dist >= 25) {
+                  activity = "tram";
+                  speedFactor = 600;
+                }
+
+                // ✅ Dispatch based on detected activity
+                dispatch({ type: "INCREMENT", activity, minutes: dist / speedFactor });
               }
             }
             return [...prevPositions, { lat: latitude, lng: longitude }];
@@ -69,8 +83,8 @@ const GPSTracker = ({ dispatch }) => {
 
   return (
     <div>
-      <h2>Walking Distance Tracker</h2>
-      <p>Distance Walked: {distance.toFixed(2)} meters</p>
+      <h2>Activity Tracker</h2>
+      <p>Distance Traveled: {distance.toFixed(2)} meters</p>
 
       {positions.length > 0 ? (
         <MapContainer center={positions[0]} zoom={18} style={{ height: "400px", width: "100%" }}>
