@@ -3,6 +3,7 @@ import { NavLink } from "react-router-dom";
 import { FaCalculator, FaChessKnight } from "react-icons/fa6";
 import { LuSquareActivity } from "react-icons/lu";
 import { IoStatsChart } from "react-icons/io5";
+import { FaUserFriends } from "react-icons/fa";
 import { FaShoppingCart } from "react-icons/fa";
 
 const BottomBar = () => {
@@ -17,8 +18,8 @@ const BottomBar = () => {
             }`
           }
         >
-          <FaCalculator className="text-xl transition-transform duration-300 hover:scale-110" />
-          <span className="text-xs mt-1">Calc</span>
+          <FaUserFriends className="text-xl transition-transform duration-300 hover:scale-110" />
+          <span className="text-xs mt-1">Friends</span>
         </NavLink>
         <NavLink
           to="/quests"
