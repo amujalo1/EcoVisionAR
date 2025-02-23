@@ -4,7 +4,7 @@ import "leaflet/dist/leaflet.css";
 
 // Haversine formula for distance calculation
 const calculateDistance = (lat1, lon1, lat2, lon2) => {
-  const R = 6371; // Earth radius in 
+  const R = 6371; // Earth radius in
   const dLat = ((lat2 - lat1) * Math.PI) / 180;
   const dLon = ((lon2 - lon1) * Math.PI) / 180;
   const a =
@@ -92,8 +92,8 @@ const GPSTracker = ({ dispatch }) => {
 
   return (
     <div>
-      <h2>Activity Tracker</h2>
-      <p>Distance Traveled: {distance.toFixed(2)} meters</p>
+      {/* <h2>Activity Tracker</h2>
+      <p>Distance Traveled: {distance.toFixed(2)} meters</p> */}
 
       {positions.length > 0 ? (
         <MapContainer

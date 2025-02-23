@@ -4,49 +4,54 @@ import Layout from "../components/Layout";
 
 const products = [
   {
-    id: 1,
-    name: "Gaming Laptop",
-    price: "$1499",
-    points: 1499,
-    description: "High-performance gaming laptop with RGB keyboard and powerful GPU.",
+    id: 7,
+    name: "Solarni Punjač",
+    price: "$49",
+    points: 49,
+    description:
+      "Prenosivi solarni punjač za pametne telefone i tablete, idealan za ekološku uštedu energije.",
   },
   {
-    id: 2,
-    name: "Smartphone Pro Max",
-    price: "$999",
-    points: 999,
-    description: "Flagship smartphone with high refresh rate display and pro-grade cameras.",
+    id: 8,
+    name: "Bambusova Četkica za Zube",
+    price: "$5",
+    points: 5,
+    description:
+      "Biorazgradiva četkica za zube izrađena od bambusa, smanjuje plastični otpad.",
   },
   {
-    id: 3,
-    name: "Wireless Earbuds",
-    price: "$199",
-    points: 199,
-    description: "Noise-canceling wireless earbuds with excellent battery life and deep bass.",
+    id: 9,
+    name: "Ekološka Boca za Vodu",
+    price: "$25",
+    points: 25,
+    description:
+      "Višekratna boca od nehrđajućeg čelika, smanjuje potrebu za plastičnim bocama.",
   },
   {
-    id: 4,
-    name: "Smartwatch Ultra",
-    price: "$499",
-    points: 499,
-    description: "Premium smartwatch with health tracking, GPS, and long battery life.",
+    id: 10,
+    name: "Pamučne Vrećice za Kupovinu",
+    price: "$10",
+    points: 10,
+    description:
+      "Višekratne vrećice od organskog pamuka za smanjenje korištenja plastičnih vrećica.",
   },
   {
-    id: 5,
-    name: "Mechanical Keyboard",
-    price: "$129",
-    points: 129,
-    description: "Customizable mechanical keyboard with hot-swappable switches and RGB lighting.",
+    id: 11,
+    name: "LED Žarulje",
+    price: "$15",
+    points: 15,
+    description:
+      "Energetski učinkovite LED žarulje koje troše manje struje i traju duže.",
   },
   {
-    id: 6,
-    name: "4K Gaming Monitor",
-    price: "$599",
-    points: 599,
-    description: "Ultra HD gaming monitor with high refresh rate and adaptive sync technology.",
-  }
+    id: 12,
+    name: "Organski Sapun",
+    price: "$8",
+    points: 8,
+    description:
+      "Prirodni sapun bez štetnih kemikalija, biorazgradiv i nježan za kožu.",
+  },
 ];
-
 function ShopPage() {
   const [expandedId, setExpandedId] = useState(null);
   const [userPoints, setUserPoints] = useState(1000);
@@ -55,9 +60,15 @@ function ShopPage() {
   const handleBuyClick = (product) => {
     if (userPoints >= product.points) {
       setUserPoints(userPoints - product.points);
-      setMessage({ type: "success", text: `Uspješno ste kupili ${product.name}!` });
+      setMessage({
+        type: "success",
+        text: `Uspješno ste kupili ${product.name}!`,
+      });
     } else {
-      setMessage({ type: "error", text: "Nemate dovoljno bodova za ovu kupovinu!" });
+      setMessage({
+        type: "error",
+        text: "Nemate dovoljno bodova za ovu kupovinu!",
+      });
     }
   };
 
@@ -76,11 +87,19 @@ function ShopPage() {
                   whileHover={{ scale: 1.05 }}
                   onClick={() => setExpandedId(product.id)}
                 >
-                  <h3 className="text-lg font-semibold text-green-700">{product.name}</h3>
+                  <h3 className="text-lg font-semibold text-green-700">
+                    {product.name}
+                  </h3>
                   <div>
-                    <p className="text-gray-500 line-through">${originalPrice.toFixed(2)}</p>
-                    <p className="text-gray-900 font-bold">${discountedPrice.toFixed(2)}</p>
-                    <p className="text-green-600 font-medium">{product.points} points</p>
+                    <p className="text-gray-500 line-through">
+                      ${originalPrice.toFixed(2)}
+                    </p>
+                    <p className="text-gray-900 font-bold">
+                      ${discountedPrice.toFixed(2)}
+                    </p>
+                    <p className="text-green-600 font-medium">
+                      {product.points} points
+                    </p>
                   </div>
                 </motion.div>
 
@@ -100,11 +119,21 @@ function ShopPage() {
                         exit={{ scale: 0.8 }}
                         onClick={(e) => e.stopPropagation()}
                       >
-                        <h3 className="text-2xl font-semibold text-green-700 mb-4">{product.name}</h3>
-                        <p className="text-gray-500 line-through">${originalPrice.toFixed(2)}</p>
-                        <p className="text-gray-900 font-bold text-xl mb-4">${discountedPrice.toFixed(2)}</p>
-                        <p className="text-green-600 text-lg mb-4">{product.points} points</p>
-                        <p className="text-gray-700 text-lg mb-4">{product.description}</p>
+                        <h3 className="text-2xl font-semibold text-green-700 mb-4">
+                          {product.name}
+                        </h3>
+                        <p className="text-gray-500 line-through">
+                          ${originalPrice.toFixed(2)}
+                        </p>
+                        <p className="text-gray-900 font-bold text-xl mb-4">
+                          ${discountedPrice.toFixed(2)}
+                        </p>
+                        <p className="text-green-600 text-lg mb-4">
+                          {product.points} points
+                        </p>
+                        <p className="text-gray-700 text-lg mb-4">
+                          {product.description}
+                        </p>
 
                         <button
                           onClick={() => handleBuyClick(product)}

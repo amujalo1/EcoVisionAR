@@ -2,40 +2,36 @@ require("dotenv").config({ path: ".env" });
 
 const express = require("express");
 const mongoose = require("mongoose");
+const cors = require("cors");
 const userRoutes = require("./routes/userRoutes");
 
 const app = express();
 
-// In your server.js/index.js
-const cors = require("cors");
-
-// Add this before your routes
+// CORS configuration
 app.use(
   cors({
-    //origin: "http://localhost:5173", // Postavi frontend URL
-    methods: ["GET", "POST", "PUT", "DELETE"], // Dozvoljene metode
-    allowedHeaders: ["Content-Type", "Authorization"], // Dozvoljena zaglavlja
-    credentials: true, // Omogućava slanje cookies/tokena
+    origin: "*",
+    // methods: ["GET", "POST", "PUT", "DELETE"],
+    allowedHeaders: ["Content-Type", "Authorization"],
+    credentials: true,
   })
 );
 
-app.use(express.json()); // Omogućava parsiranje JSON zahtjeva
-
-// Omogućavanje preflight zahtjeva za sve rute
 app.options("*", cors());
 
-// Provjera da li je MONGO_URI definisan
+app.use(express.json());
+
+// MongoDB connection
 if (!process.env.MONGO_URI) {
   console.error("❌ MONGO_URI nije definisan u .env datoteci!");
   process.exit(1);
 }
 
-// Konekcija s MongoDB
 mongoose
   .connect(process.env.MONGO_URI, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
-    serverSelectionTimeoutMS: 30000, // Timeout povećan na 30 sekundi
+    serverSelectionTimeoutMS: 30000,
   })
   .then(() => console.log("✅ Povezano s MongoDB"))
   .catch((err) => {
@@ -43,14 +39,14 @@ mongoose
     process.exit(1);
   });
 
-// Povezivanje ruta
+// Routes
 app.use("/api/users", userRoutes);
 
-// Test ruta
+// Test route
 app.get("/", (req, res) => {
   res.send("🚀 Eko aplikacija API radi!");
 });
 
-// Pokretanje servera
+// Start server
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => console.log(`🚀 Server pokrenut na portu ${PORT}`));

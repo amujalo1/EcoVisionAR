@@ -25,18 +25,18 @@ function Calculator() {
           if (userData) {
             setUsers([userData]);
             setErrorMessage(null);
-            setNoUserFound(false);
+            // setNoUserFound(false);
           } else {
             setUsers([]);
-            setNoUserFound(true);
+            // setNoUserFound(true);
           }
         } catch (err) {
           setUsers([]);
-          setNoUserFound(true);
+          // setNoUserFound(true);
         }
       } else {
         setUsers([]);
-        setNoUserFound(false);
+        // setNoUserFound(false);
       }
     };
 

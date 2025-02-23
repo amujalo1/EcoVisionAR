@@ -51,9 +51,9 @@ const XpBar = () => {
     fetchUser();
 
     // Dodajemo interval za periodično osvježavanje
-    const interval = setInterval(fetchUser, 30000); // Svakih 30 sekundi
+    //const interval = setInterval(fetchUser, 30000); // Svakih 30 sekundi
 
-    return () => clearInterval(interval);
+    //return () => clearInterval(interval);
   }, [userId, setUser]);
 
   if (!user) {

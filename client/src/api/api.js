@@ -68,6 +68,7 @@ export const getUserById = async (id) => {
 export const getUserByUsername = async (username) => {
   try {
     const response = await fetch(`${API_URL}/users/username/${username}`);
+    console.log(response);
     const data = await response.json();
     if (response.ok) {
       return data;

@@ -25,9 +25,9 @@ const TopBar = () => {
     fetchUser();
 
     // Dodajemo interval za periodično osvježavanje
-    const interval = setInterval(fetchUser, 30000); // Svakih 30 sekundi
+    // const interval = setInterval(fetchUser, 30000); // Svakih 30 sekundi
 
-    return () => clearInterval(interval);
+    //return () => clearInterval(interval);
   }, [userId, setUser]);
 
   const handleLogout = () => {
@@ -54,7 +54,7 @@ const TopBar = () => {
 
       {/* Logo (centrirano) */}
       <div className="absolute left-1/2 -translate-x-1/2 text-xl font-bold text-green-700">
-        🌍 LOGO
+        <img src="../../public/logo.png" className="h-16 w-32" />
       </div>
 
       {/* Profil + Level */}

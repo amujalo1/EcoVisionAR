@@ -42,7 +42,9 @@ const ActivityTab = ({ state = {}, dispatch }) => {
     <div className="p-6 max-w-2xl mx-auto bg-slate-300 rounded-2xl">
       <div className="text-center mb-6">
         <div className="text-lg font-semibold">Total CO2 Impact</div>
-        <div className="text-2xl font-bold text-gray-800">{totalCO2} kg CO2</div>
+        <div className="text-2xl font-bold text-gray-800">
+          {totalCO2} kg CO2
+        </div>
       </div>
 
       <div className="flex flex-col items-center mb-8 relative">
@@ -104,14 +106,14 @@ const ActivityTab = ({ state = {}, dispatch }) => {
         )}
       </div>
 
-      {totalCO2 !== 0 && (
+      {/* {totalCO2 !== 0 && (
         <button
           onClick={() => dispatch({ type: "RESET" })}
           className="mt-6 px-4 py-2 bg-gray-200 rounded-lg hover:bg-gray-300 transition-colors"
         >
           Reset
         </button>
-      )}
+      )} */}
 
       <ActivityForm
         activity={selectedActivity}

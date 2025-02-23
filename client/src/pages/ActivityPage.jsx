@@ -6,19 +6,15 @@ import GPSTracker from "../components/GPSTracker";
 import { getUserById, updateDailyActivity } from "../api/api";
 import Layout from "../components/Layout";
 
-const dailyQuests = [
-  { activity: "walking", minutes: 30 },
-  { activity: "running", minutes: 20 },
-  { activity: "biking", minutes: 45 },
-];
-
 function ActivityPage() {
   const userId = localStorage.getItem("id");
+  const [isStreak, setIsStreak] = useState(false);
   const [state, setState] = useAtom(stateAtom);
   const [user, setUser] = useAtom(userAtom);
   const [, dispatch] = useAtom(dispatchAtom);
   const [loading, setLoading] = useState(true);
 
+  // Učitavanje korisničkih podataka
   useEffect(() => {
     if (!userId) return;
 
@@ -38,9 +34,25 @@ function ActivityPage() {
       });
   }, [userId]);
 
-  // Učitaj i ažuriraj bazu kad god se promijeni stanje (uključujući XP)
+  // Ažuriranje dnevne aktivnosti korisnika
   useEffect(() => {
     if (!loading && userId && user) {
+      // Ako je totalCO2 ispod pola, postavi isStreak na true
+      if (
+        user.dailyActivity.totalCO2 <= user.dailyActivity.totalCO2 / 2 &&
+        !isStreak
+      ) {
+        setIsStreak(true); // Samo postavi ako je potrebno
+      }
+      // Ako je totalCO2 iznad pola, resetuj isStreak na false
+      else if (
+        user.dailyActivity.totalCO2 > user.dailyActivity.totalCO2 / 2 &&
+        isStreak
+      ) {
+        setIsStreak(false); // Samo resetuj ako je potrebno
+      }
+
+      // Ažuriraj dnevnu aktivnost korisnika
       updateDailyActivity(userId, { ...state, experience: user.experience })
         .then(() => {
           console.log("Stanje uspješno ažurirano u bazi");
@@ -49,18 +61,12 @@ function ActivityPage() {
           console.error("Greška pri ažuriranju stanja:", error);
         });
     }
-  }, [state, userId, loading, user]);
+  }, [user, loading, state, userId, isStreak]); // Sada su zavisnosti ispravno postavljene
 
   return (
     <Layout>
       <div className="flex flex-col h-full">
-        <ActivityTab state={state} dispatch={dispatch} />
-        <button
-          onClick={() => dispatch({ type: "RESET" })}
-          className="mt-6 px-4 py-2 bg-gray-200 rounded-lg hover:bg-gray-300 transition-colors"
-        >
-          Reset
-        </button>
+        <ActivityTab state={state} dispatch={dispatch} isStreak={isStreak} />
         {<GPSTracker dispatch={dispatch} />}
       </div>
     </Layout>
