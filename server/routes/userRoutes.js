@@ -50,7 +50,17 @@ router.post("/login", async (req, res) => {
     res.status(500).json({ error: err.message });
   }
 });
-
+router.get("/all", async (req, res) => {
+  try {
+    const user = await User.find();
+    if (!user) {
+      return res.status(404).json({ message: "Korisnik nije pronađen" });
+    }
+    res.json(user);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
 // 📌 Dohvati korisnika po ID-ju
 router.get("/:id", async (req, res) => {
   try {

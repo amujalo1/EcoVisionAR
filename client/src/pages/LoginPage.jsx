@@ -23,7 +23,7 @@ const LoginPage = () => {
       navigate("/activity");
     } catch (error) {
       console.error("Login error:", error);
-      setErrorMessage("Neispravno korisničko ime ili lozinka");
+      setErrorMessage("Wrong username or password. Try again.");
     } finally {
       setIsLoading(false);
     }
@@ -33,7 +33,7 @@ const LoginPage = () => {
     <div className="flex items-center justify-center min-h-screen bg-gray-100">
       <div className="bg-white p-8 rounded-lg shadow-lg max-w-sm w-full">
         <h2 className="text-2xl font-semibold text-teal-600 text-center mb-6">
-          Prijavi se
+          Login
         </h2>
         <form onSubmit={handleLogin} className="space-y-4">
           <div className="space-y-2">
@@ -41,7 +41,7 @@ const LoginPage = () => {
               htmlFor="username"
               className="block text-gray-700 font-medium"
             >
-              Korisničko ime
+              Username
             </label>
             <input
               type="text"
@@ -58,7 +58,7 @@ const LoginPage = () => {
               htmlFor="password"
               className="block text-gray-700 font-medium"
             >
-              Lozinka
+              Password
             </label>
             <input
               type="password"
@@ -81,14 +81,14 @@ const LoginPage = () => {
             }`}
             disabled={isLoading}
           >
-            {isLoading ? "Prijavljivanje..." : "Prijavi se"}
+            {isLoading ? "Loging in..." : "Log in"}
           </button>
         </form>
 
         <p className="text-center text-md text-gray-500 mt-4">
-          🌍 Nemate racun?{" "}
+          🌍 No account?{" "}
           <NavLink to="/register">
-            <span className="text-green-500 bold">Registrirajte se</span>
+            <span className="text-green-500 bold"> Click to register!</span>
           </NavLink>
         </p>
       </div>

@@ -12,7 +12,7 @@ const LogoutButton = () => {
   return (
     <button
       onClick={logout}
-      className="px-6 py-2 bg-green-600 text-white font-semibold rounded-lg shadow-md hover:bg-green-500 focus:outline-none focus:ring-2 focus:ring-green-400 focus:ring-opacity-75 transition ease-in-out duration-200"
+      className="px-6 py-2 bg-orange-400 text-white font-semibold rounded-lg shadow-md cursor:pointer hover:bg-red-500 focus:outline-none focus:ring-2 focus:ring-green-400 focus:ring-opacity-75 transition ease-in-out duration-200 m-2"
     >
       Logout
     </button>

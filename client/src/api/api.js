@@ -79,6 +79,20 @@ export const getUserByUsername = async (username) => {
     throw err;
   }
 };
+export const getAll = async () => {
+  try {
+    const response = await fetch(`${API_URL}/users/all`);
+    const data = await response.json();
+    if (response.ok) {
+      return data;
+    } else {
+      throw new Error(data.message || "Users not found");
+    }
+  } catch (err) {
+    console.error(err);
+    throw err;
+  }
+};
 // Function to add a friend
 export const addFriend = async (userId, friendId) => {
   try {

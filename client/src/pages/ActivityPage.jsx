@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useAtom } from "jotai";
 import { stateAtom, dispatchAtom, userAtom } from "../store/store"; // Imported atoms
-import TopBar from "../components/TopBar";
 import ActivityTab from "../components/ActivityTab";
 import GPSTracker from "../components/GPSTracker";
 import { getUserById, updateDailyActivity } from "../api/api";
@@ -54,7 +53,6 @@ function ActivityPage() {
 
   return (
     <Layout>
-      <TopBar />
       <div className="flex flex-col h-full">
         <ActivityTab state={state} dispatch={dispatch} />
         <button

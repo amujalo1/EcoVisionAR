@@ -18,7 +18,7 @@ const RegisterPage = () => {
 
     // Provjerava ako lozinke odgovaraju
     if (password !== confirmPassword) {
-      setErrorMessage("Lozinke se ne podudaraju.");
+      setErrorMessage("Passwords do not match.");
       setIsLoading(false);
       return;
     }
@@ -31,7 +31,7 @@ const RegisterPage = () => {
       navigate("/login");
     } catch (error) {
       console.error("Registration error:", error);
-      setErrorMessage("Greška pri registraciji. Pokušaj ponovo.");
+      setErrorMessage("Registration failed. Try again.");
     } finally {
       setIsLoading(false);
     }
@@ -41,7 +41,7 @@ const RegisterPage = () => {
     <div className="flex items-center justify-center min-h-screen bg-gray-100">
       <div className="bg-white p-8 rounded-lg shadow-lg max-w-sm w-full">
         <h2 className="text-2xl font-semibold text-teal-600 text-center mb-6">
-          Registruj se
+          Register
         </h2>
         <form onSubmit={handleRegister} className="space-y-4">
           <div className="space-y-2">
@@ -49,7 +49,7 @@ const RegisterPage = () => {
               htmlFor="username"
               className="block text-gray-700 font-medium"
             >
-              Korisničko ime
+              Username
             </label>
             <input
               type="text"
@@ -66,7 +66,7 @@ const RegisterPage = () => {
               htmlFor="password"
               className="block text-gray-700 font-medium"
             >
-              Lozinka
+              Password
             </label>
             <input
               type="password"
@@ -83,7 +83,7 @@ const RegisterPage = () => {
               htmlFor="confirmPassword"
               className="block text-gray-700 font-medium"
             >
-              Potvrdi lozinku
+              Confirm password
             </label>
             <input
               type="password"
@@ -106,14 +106,14 @@ const RegisterPage = () => {
             }`}
             disabled={isLoading}
           >
-            {isLoading ? "Registracija..." : "Registruj se"}
+            {isLoading ? "Registering.." : "Register"}
           </button>
         </form>
 
         <p className="text-center text-md text-gray-500 mt-4">
-          🌍 Imate racun?{" "}
+          🌍 Got an account?{" "}
           <NavLink to="/login">
-            <span className="text-green-500 bold">Prijavite se!</span>
+            <span className="text-green-500 bold">Log in!</span>
           </NavLink>
         </p>
       </div>
