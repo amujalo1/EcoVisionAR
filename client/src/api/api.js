@@ -103,22 +103,17 @@ export const addFriend = async (userId, friendId) => {
 };
 
 // Function to update daily activity and CO2
-
 export const updateDailyActivity = async (userId, state) => {
   try {
-    console.log(state, userId);
-    const response = await fetch(
-      `${API_URL}/users/${userId}/dailyActivity`, // updated path
-      {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(state), // Sending the state
-      }
-    );
-
-    console.log(response);
+    const response = await fetch(`${API_URL}/users/${userId}/dailyActivity`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        ...state, // Šaljemo cijeli state (uključujući experience)
+      }),
+    });
 
     if (!response.ok) {
       throw new Error("Neuspješno ažuriranje stanja");
@@ -172,4 +167,3 @@ export const getAllUsers = async () => {
     throw err;
   }
 };
-

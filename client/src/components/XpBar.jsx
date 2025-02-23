@@ -32,7 +32,7 @@ const getNextLevelXP = (level) => {
   return next ? next.xp : levels[levels.length - 1].xp;
 };
 
-const TopBar = () => {
+const XpBar = () => {
   const [user, setUser] = useAtom(userAtom);
   const userId = localStorage.getItem("id");
 
@@ -71,25 +71,23 @@ const TopBar = () => {
   );
 
   return (
-    <div className="fixed top-0 left-1/2 -translate-x-1/2 w-full rounded-xl max-w-md bg-white border-t border-gray-200 z-50 shadow-lg p-3">
-      <div className="flex flex-col items-center text-center">
-        <span className="text-lg font-semibold text-green-600">
-          {currentLevel.title} (Level {currentLevel.level})
-        </span>
+    <div className="flex flex-col items-center text-center mt-6">
+      <span className="text-lg font-semibold text-green-600">
+        {currentLevel.title} (Level {currentLevel.level})
+      </span>
 
-        <span className="text-sm text-gray-600 mt-1">
-          XP: {fixedExperience}/{nextLevelXP}
-        </span>
+      <span className="text-sm text-gray-600 mt-1">
+        XP: {fixedExperience}/{nextLevelXP}
+      </span>
 
-        <div className="relative w-full h-3 bg-gray-300 rounded-full overflow-hidden mt-2">
-          <div
-            className="absolute left-0 h-full bg-orange-500 rounded-full transition-all"
-            style={{ width: `${progress}%` }}
-          ></div>
-        </div>
+      <div className="relative w-full h-3 bg-gray-300 rounded-full overflow-hidden mt-2">
+        <div
+          className="absolute left-0 h-full bg-orange-500 rounded-full transition-all"
+          style={{ width: `${progress}%` }}
+        ></div>
       </div>
     </div>
   );
 };
 
-export default TopBar;
+export default XpBar;

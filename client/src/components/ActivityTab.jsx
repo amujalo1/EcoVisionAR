@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import ActivityIcon from "./ActivityIcon";
 import ActivityForm from "./ActivityForm";
 import ReactApexChart from "react-apexcharts";
+import XpBar from "./XpBar";
 
 const ActivityTab = ({ state = {}, dispatch }) => {
   const CO2_EMISSIONS = {
@@ -77,6 +78,7 @@ const ActivityTab = ({ state = {}, dispatch }) => {
   return (
     <div className="min-h-screen bg-gray-50">
       <div className="max-w-4xl mx-auto px-4">
+        <XpBar />
         <div className="mb-2 flex justify-center relative mt-8">
           {/* Donut grafikon */}
           <div style={{ width: "100%", maxWidth: "300px" }}>

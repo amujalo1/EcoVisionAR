@@ -7,7 +7,7 @@ const CO2_EMISSIONS = {
   transport: -0.3,
 };
 
-const defaultState = {
+const defaultActivityState = {
   walking: 0,
   running: 0,
   biking: 0,
@@ -36,17 +36,20 @@ const reducer = (state, action, userState) => {
     }
     case "RESET":
       return {
-        newState: defaultState,
+        newState: defaultActivityState,
         newUserState: { ...userState, experience: 0 },
       };
     case "SET_INITIAL_STATE":
-      return { newState: action.payload, newUserState: userState };
+      return {
+        newState: action.payload.dailyActivity,
+        newUserState: action.payload,
+      };
     default:
       return { newState: state, newUserState: userState };
   }
 };
 
-export const stateAtom = atom(defaultState);
+export const stateAtom = atom(defaultActivityState);
 export const userAtom = atom({
   username: "",
   streak: 0,
@@ -55,6 +58,7 @@ export const userAtom = atom({
   level: 1,
   friends: [],
   quests: [],
+  dailyActivity: defaultActivityState, // Dodajemo dailyActivity u userAtom
 });
 
 export const dispatchAtom = atom(null, (get, set, action) => {

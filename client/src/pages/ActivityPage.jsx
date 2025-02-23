@@ -27,7 +27,7 @@ function ActivityPage() {
       .then((userData) => {
         dispatch({
           type: "SET_INITIAL_STATE",
-          payload: userData.dailyActivity || defaultState, // Postavljanje početnog stanja
+          payload: userData, // Šaljemo cijeli korisnički objekt
         });
 
         setUser(userData); // Postavljanje korisničkog stanja
@@ -41,8 +41,8 @@ function ActivityPage() {
 
   // Učitaj i ažuriraj bazu kad god se promijeni stanje (uključujući XP)
   useEffect(() => {
-    if (!loading && userId && state) {
-      updateDailyActivity(userId, state)
+    if (!loading && userId && user) {
+      updateDailyActivity(userId, { ...state, experience: user.experience })
         .then(() => {
           console.log("Stanje uspješno ažurirano u bazi");
         })
@@ -50,7 +50,7 @@ function ActivityPage() {
           console.error("Greška pri ažuriranju stanja:", error);
         });
     }
-  }, [state, userId, loading]);
+  }, [state, userId, loading, user]);
 
   return (
     <Layout>
