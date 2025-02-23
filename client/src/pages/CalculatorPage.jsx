@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { motion } from "framer-motion";
 import TopBar from "../components/TopBar";
 import { getUserByUsername, addFriend, getAll } from "../api/api"; // Import your API functions
 import { useAtom } from "jotai";
@@ -21,14 +22,21 @@ function Calculator() {
       if (search) {
         try {
           const userData = await getUserByUsername(search);
-          setUsers([userData]);
-          setErrorMessage(null);
+          if (userData) {
+            setUsers([userData]);
+            setErrorMessage(null);
+            setNoUserFound(false);
+          } else {
+            setUsers([]);
+            setNoUserFound(true);
+          }
         } catch (err) {
           setUsers([]);
+          setNoUserFound(true);
         }
       } else {
         setUsers([]);
-        setErrorMessage(null);
+        setNoUserFound(false);
       }
     };
 
@@ -175,7 +183,12 @@ function Calculator() {
 
         {/* Success Message */}
         {successMessage && (
-          <div className="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-green-500 text-white p-4 rounded-lg shadow-lg">
+          <motion.div
+            initial={{ opacity: 0, scale: 0.8 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.3 }}
+            className="fixed top-20 left-1/2 transform -translate-x-1/2 bg-green-500 text-white px-6 py-3 rounded-lg shadow-lg"
+          >
             {successMessage}
             <button
               className="ml-4 bg-white text-green-500 px-2 py-1 rounded"
@@ -183,12 +196,17 @@ function Calculator() {
             >
               OK
             </button>
-          </div>
+          </motion.div>
         )}
 
         {/* Error Message */}
         {errorMessage && (
-          <div className="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-red-500 text-white p-4 rounded-lg shadow-lg">
+          <motion.div
+            initial={{ opacity: 0, scale: 0.8 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.3 }}
+            className="fixed top-20 left-1/2 transform -translate-x-1/2 bg-red-500 text-white px-6 py-3 rounded-lg shadow-lg"
+          >
             {errorMessage}
             <button
               className="ml-4 bg-white text-red-500 px-2 py-1 rounded"
@@ -196,7 +214,7 @@ function Calculator() {
             >
               OK
             </button>
-          </div>
+          </motion.div>
         )}
       </div>
     </>
