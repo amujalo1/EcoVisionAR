@@ -1,7 +1,12 @@
 # Ecovision - PWA namjenjen za androide
 
 ## Opis Projekta
-Ecovision je web aplikacija osmišljena s ciljem smanjenja emisije CO2 kroz motivaciju korisnika da više hodaju, trče i koriste gradski prevoz. Korisnici su nagrađeni različitim popustima na proizvode dostupne u aplikaciji. Ova aplikacija potiče ekološki prihvatljiv način života kroz gamifikaciju i nagrade.
+Ecovision je web aplikacija koja motiviše korisnike da hodaju, trče i koriste gradski prevoz kako bi smanjili emisiju CO₂. Aplikacija koristi GPS praćenje kako bi precizno izračunala uštedu CO₂ na osnovu kretanja korisnika.
+
+Korisnici osvajaju EXP bodove za ekološki odgovorno ponašanje – što više hodaju, trče i koriste prevoz, to više EXP-a dobijaju. Tu su i rang-liste (leaderboard) gdje su na vrhu oni sa najviše EXP-a, kao i posebni "questovi" koji donose dodatne bodove i popuste na proizvode dostupne u aplikaciji.
+
+Ecovision čini ekološki način života zabavnim i nagrađuje korisnike za njihov doprinos smanjenju emisije CO₂.
+
 
 ## Best Hackathon Mostar 2025
 Aplikacija je razvijena tokom Best Hackathona u Mostaru od strane tima **Singleton**, koji čine:
