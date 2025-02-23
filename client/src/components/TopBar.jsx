@@ -1,9 +1,8 @@
 import React, { useEffect } from "react";
-import { FaSeedling, FaTree, FaLeaf } from "react-icons/fa";
-import { GiTreeGrowth, GiForest } from "react-icons/gi";
-import { getUserById } from "../api/api";
 import { useAtom } from "jotai";
 import { userAtom } from "../store/store";
+import { getUserById } from "../api/api";
+import { FaUser } from "react-icons/fa";
 
 const levels = [
   { level: 1, xp: 0, title: "Eco Seedling 🌱" },
@@ -25,11 +24,6 @@ const getCurrentLevel = (xp) => {
     else break;
   }
   return current;
-};
-
-const getNextLevelXP = (level) => {
-  const next = levels.find((lvl) => lvl.level === level + 1);
-  return next ? next.xp : levels[levels.length - 1].xp;
 };
 
 const TopBar = () => {
@@ -55,27 +49,26 @@ const TopBar = () => {
     return <div className="text-center py-2">Učitavanje...</div>;
   }
 
-  const { experience } = user;
+  const { experience, points } = user;
   const currentLevel = getCurrentLevel(experience);
-  const nextLevelXP = getNextLevelXP(currentLevel.level);
-  const progress =
-    ((experience - currentLevel.xp) / (nextLevelXP - currentLevel.xp)) * 100;
 
   return (
-    <div className="fixed top-0 left-1/2 -translate-x-1/2 w-full rounded-xl max-w-md bg-white border-t border-gray-200 z-50 shadow-lg p-3">
-      <div className="flex flex-col items-center text-center">
-        <span className="text-lg font-semibold text-green-600">
-          {currentLevel.title} (Level {currentLevel.level})
-        </span>
+    <div className="fixed top-0 left-1/2 -translate-x-1/2 w-full max-w-md bg-white border-t border-gray-200 z-50 shadow-lg p-3 rounded-xl flex items-center justify-between h-14">
+      {/* Points Sistem */}
+      <div className="flex items-center gap-1 text-green-700 font-medium text-sm">
+        <span className="text-lg">🌱</span> {/* Seed emoji */}
+        <span>{points} Points</span>
+      </div>
 
-        <div className="relative w-full h-3 bg-gray-300 rounded-full overflow-hidden mt-2">
-          <div
-            className="absolute left-0 h-full bg-transparent rounded-full transition-all flex items-center justify-center"
-            style={{ width: "100%" }} // Prazna traka zauzima 100% širine
-          >
-            XP: {experience}/{nextLevelXP}
-          </div>
-        </div>
+      {/* Logo (centrirano) */}
+      <div className="absolute left-1/2 -translate-x-1/2 text-xl font-bold text-green-700">
+        🌍 LOGO
+      </div>
+
+      {/* Profil + Level */}
+      <div className="flex items-center gap-1 text-sm text-gray-700 font-medium">
+        <span>Lv. {currentLevel.level}</span>
+        <FaUser className="text-green-700 text-lg" />
       </div>
     </div>
   );
