@@ -5,37 +5,64 @@ import { getUserByUsername, addFriend } from "../api/api"; // Uvezi tvoje funkci
 function UserPage() {
   const [search, setSearch] = useState("");
   const [users, setUsers] = useState([]);
-  const [error, setError] = useState(null);
+  const [errorMessage, setErrorMessage] = useState(null);
+  const [successMessage, setSuccessMessage] = useState(null);
+  const [friends, setFriends] = useState([]);
 
   useEffect(() => {
     const fetchUsers = async () => {
       if (search) {
         try {
-          // Ako postoji unos, pretraži korisnike prema username-u
           const userData = await getUserByUsername(search);
-          setUsers([userData]); // Ažuriraj korisnike u tabeli sa jednim rezultatom
+          setUsers([userData]);
+          setErrorMessage(null);
         } catch (err) {
-          setError("Korisnik nije pronađen.");
-          setUsers([]); // Ako nema korisnika, očisti tabelu
+          setUsers([]);
         }
       } else {
-        setUsers([]); // Ako je search prazan, očisti tabelu
+        setUsers([]);
+        setErrorMessage(null);
       }
     };
 
     fetchUsers();
-  }, [search]); // Pozovi fetch kad god search vrednost bude promenjena
+  }, [search]);
+
+  useEffect(() => {
+    const fetchFriends = async () => {
+      try {
+        const currentUserId = localStorage.getItem("id");
+        const friendsList = await getFriendsList(currentUserId);
+        setFriends(friendsList);
+      } catch (err) {
+        console.error("Greška pri dohvaćanju liste prijatelja", err);
+      }
+    };
+
+    fetchFriends();
+  }, []);
 
   const handleAddFriend = async (username) => {
-    const userId = await handleSearchUser(username);
-    if (!userId) return;
-
     try {
+      const userData = await getUserByUsername(username);
+      if (!userData) return;
+
+      const userId = userData._id;
       const currentUserId = localStorage.getItem("id");
-      const response = await addFriend(currentUserId, userId);
-      console.log("Korisnik je uspešno dodat kao prijatelj", response);
+
+      if (friends.some((friend) => friend._id === userId)) {
+        setErrorMessage("Korisnik je već u listi prijatelja.");
+        return;
+      }
+
+      await addFriend(currentUserId, userId);
+      setSuccessMessage("Uspješno dodan korisnik.");
+      setFriends([...friends, userData]);
+
+      setSearch("");
+      setUsers([]);
     } catch (err) {
-      setError("Došlo je do greške prilikom dodavanja prijatelja.");
+      setErrorMessage("Došlo je do greške prilikom dodavanja prijatelja.");
     }
   };
 
@@ -43,14 +70,14 @@ function UserPage() {
     <>
       <TopBar />
       <div className="flex flex-col items-center p-5 mt-10">
-        {/* Pretraga korisnika i dugme za dodavanje */}
+        {/* Pretraga korisnika */}
         <div className="flex gap-3 mb-6">
           <input
             type="text"
             className="border p-2 rounded w-64"
             placeholder="Pretraži korisnike"
             value={search}
-            onChange={(e) => setSearch(e.target.value)} // Promeni search stanje prilikom unosa
+            onChange={(e) => setSearch(e.target.value)}
           />
         </div>
 
@@ -59,8 +86,8 @@ function UserPage() {
           <table className="w-full table-auto border-separate border-spacing-0">
             <thead>
               <tr className="bg-gray-100">
-                <th className="border-b p-3 text-left">Username</th>
-                <th className="border-b p-3 text-left">Akcija</th>
+                <th className="border-b p-3 text-left"></th>
+                <th className="border-b p-3 text-left"></th>
               </tr>
             </thead>
             <tbody>
@@ -79,18 +106,43 @@ function UserPage() {
                   </tr>
                 ))
               ) : (
-                <tr>
-                  <td colSpan="2" className="p-3 text-center">
-                    Nema rezultata
-                  </td>
-                </tr>
+                errorMessage && (
+                  <tr>
+                    <td colSpan="2" className="p-3 text-center text-red-500">
+                      {errorMessage}
+                    </td>
+                  </tr>
+                )
               )}
             </tbody>
           </table>
         </div>
 
-        {/* Prikazivanje greške */}
-        {error && <div className="text-red-500 mt-4">{error}</div>}
+        {/* Alert za uspeh */}
+        {successMessage && (
+          <div className="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-green-500 text-white p-4 rounded-lg shadow-lg">
+            {successMessage}
+            <button
+              className="ml-4 bg-white text-green-500 px-2 py-1 rounded"
+              onClick={() => setSuccessMessage(null)}
+            >
+              OK
+            </button>
+          </div>
+        )}
+
+        {/* Alert za grešku */}
+        {errorMessage && (
+          <div className="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-red-500 text-white p-4 rounded-lg shadow-lg">
+            {errorMessage}
+            <button
+              className="ml-4 bg-white text-red-500 px-2 py-1 rounded"
+              onClick={() => setErrorMessage(null)}
+            >
+              OK
+            </button>
+          </div>
+        )}
       </div>
     </>
   );
