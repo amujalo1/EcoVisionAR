@@ -1,16 +1,16 @@
-# EcoMove - Aplikacija za Smanjenje CO2
+# Ecovision - Web Aplikacija za Smanjenje CO2
 
 ## Opis Projekta
-EcoMove je web aplikacija osmišljena s ciljem smanjenja emisije CO2 kroz motivaciju korisnika da više hodaju, trče i koriste gradski prevoz. Korisnici su nagrađeni različitim popustima na proizvode dostupne u aplikaciji. Ova aplikacija potiče ekološki prihvatljiv način života kroz gamifikaciju i nagrade.
+Ecovision je web aplikacija osmišljena s ciljem smanjenja emisije CO2 kroz motivaciju korisnika da više hodaju, trče i koriste gradski prevoz. Korisnici su nagrađeni različitim popustima na proizvode dostupne u aplikaciji. Ova aplikacija potiče ekološki prihvatljiv način života kroz gamifikaciju i nagrade.
 
-## Best Hackathon Mostar 202X
+## Best Hackathon Mostar 2025
 Aplikacija je razvijena tokom Best Hackathona u Mostaru od strane tima **Singleton**, koji čine:
 - **Amer Mujalo**
 - **Mario Prskalo**
 - **Nedim Neimarlija**
 - **Benjamin Bandić**
 
-Projekat je razvijen u roku od **manje od 35 sati**, realno ispod **24 sata**.
+Projekat je razvijen u roku od **manje od 35 sati**.
 
 ---
 ## Struktura Projekta
@@ -102,7 +102,7 @@ npm install
 ```
 Pokrenite backend server:
 ```sh
-npm start
+node index.js
 ```
 Server će raditi na `http://localhost:5000` (ili drugom portu ako je podešen u `.env` fajlu).
 
