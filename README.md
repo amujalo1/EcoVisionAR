@@ -12,6 +12,16 @@ Aplikacija je razvijena tokom Best Hackathona u Mostaru od strane tima **Singlet
 
 Projekat je razvijen u roku od **manje od 35 sati**.
 
+
+
+<img width="161" alt="Screenshot 2025-02-23 091442" src="https://github.com/user-attachments/assets/642910b6-4483-4948-ae9c-1f7462e0c614" />
+<img width="154" alt="Screenshot 2025-02-23 091545" src="https://github.com/user-attachments/assets/e20e8d54-f405-47f1-a88e-d73ce5dad813" />
+<img width="158" alt="Screenshot 2025-02-23 091614" src="https://github.com/user-attachments/assets/64d4b1ea-0526-4747-8cdf-5e84fabe9a69" />
+<img width="160" alt="Screenshot 2025-02-23 091632" src="https://github.com/user-attachments/assets/40b39bc6-8fb8-4c10-8598-57e9be4eb112" />
+<img width="160" alt="Screenshot 2025-02-23 091717" src="https://github.com/user-attachments/assets/ec420eb3-42ce-4369-a323-4eb08cf9a0a0" />
+<img width="259" alt="Screenshot 2025-02-23 091112" src="https://github.com/user-attachments/assets/80571824-139a-4c62-bd28-73c9c96aa0a0" />
+
+
 ---
 ## Struktura Projekta
 Projekat se sastoji iz dva glavna dijela:
@@ -78,12 +88,7 @@ server/
 │── package-lock.json
 │── .gitignore
 ```
-<img width="161" alt="Screenshot 2025-02-23 091442" src="https://github.com/user-attachments/assets/642910b6-4483-4948-ae9c-1f7462e0c614" />
-<img width="154" alt="Screenshot 2025-02-23 091545" src="https://github.com/user-attachments/assets/e20e8d54-f405-47f1-a88e-d73ce5dad813" />
-<img width="158" alt="Screenshot 2025-02-23 091614" src="https://github.com/user-attachments/assets/64d4b1ea-0526-4747-8cdf-5e84fabe9a69" />
-<img width="160" alt="Screenshot 2025-02-23 091632" src="https://github.com/user-attachments/assets/40b39bc6-8fb8-4c10-8598-57e9be4eb112" />
-<img width="160" alt="Screenshot 2025-02-23 091717" src="https://github.com/user-attachments/assets/ec420eb3-42ce-4369-a323-4eb08cf9a0a0" />
-<img width="259" alt="Screenshot 2025-02-23 091112" src="https://github.com/user-attachments/assets/80571824-139a-4c62-bd28-73c9c96aa0a0" />
+
 
 
 ---
@@ -122,7 +127,7 @@ Server će raditi na `http://localhost:5000` (ili drugom portu ako je podešen u
 - **Razvojno okruženje:** Vite (za frontend)
 
 ## Autori
-Tim **Singleton** – Best Hackathon Mostar 202X
+Tim **Singleton** – Best Hackathon Mostar 2025
 
 ## Licenca
 Ovaj projekat je otvorenog koda i može se koristiti u edukativne svrhe.
