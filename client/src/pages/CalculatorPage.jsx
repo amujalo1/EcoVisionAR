@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
+import { motion } from "framer-motion";
 import TopBar from "../components/TopBar";
-import { getUserByUsername, addFriend } from "../api/api"; // Uvezi tvoje funkcije
+import { getUserByUsername, addFriend } from "../api/api";
 
 function UserPage() {
   const [search, setSearch] = useState("");
@@ -8,39 +9,33 @@ function UserPage() {
   const [errorMessage, setErrorMessage] = useState(null);
   const [successMessage, setSuccessMessage] = useState(null);
   const [friends, setFriends] = useState([]);
+  const [noUserFound, setNoUserFound] = useState(false);
 
   useEffect(() => {
     const fetchUsers = async () => {
       if (search) {
         try {
           const userData = await getUserByUsername(search);
-          setUsers([userData]);
-          setErrorMessage(null);
+          if (userData) {
+            setUsers([userData]);
+            setErrorMessage(null);
+            setNoUserFound(false);
+          } else {
+            setUsers([]);
+            setNoUserFound(true);
+          }
         } catch (err) {
           setUsers([]);
+          setNoUserFound(true);
         }
       } else {
         setUsers([]);
-        setErrorMessage(null);
+        setNoUserFound(false);
       }
     };
 
     fetchUsers();
   }, [search]);
-
-  useEffect(() => {
-    const fetchFriends = async () => {
-      try {
-        const currentUserId = localStorage.getItem("id");
-        const friendsList = await getFriendsList(currentUserId);
-        setFriends(friendsList);
-      } catch (err) {
-        console.error("Greška pri dohvaćanju liste prijatelja", err);
-      }
-    };
-
-    fetchFriends();
-  }, []);
 
   const handleAddFriend = async (username) => {
     try {
@@ -70,57 +65,47 @@ function UserPage() {
     <>
       <TopBar />
       <div className="flex flex-col items-center p-5 mt-10">
-        {/* Pretraga korisnika */}
         <div className="flex gap-3 mb-6">
           <input
             type="text"
-            className="border p-2 rounded w-64"
+            className="border border-gray-300 p-2 rounded-lg w-64 focus:outline-none focus:ring-2 focus:ring-green-400 transition"
             placeholder="Pretraži korisnike"
             value={search}
             onChange={(e) => setSearch(e.target.value)}
           />
         </div>
 
-        {/* Prikazivanje korisnika u tabeli */}
-        <div className="w-full max-w-3xl overflow-x-auto bg-white rounded-lg shadow-lg">
-          <table className="w-full table-auto border-separate border-spacing-0">
-            <thead>
-              <tr className="bg-gray-100">
-                <th className="border-b p-3 text-left"></th>
-                <th className="border-b p-3 text-left"></th>
-              </tr>
-            </thead>
-            <tbody>
-              {users.length > 0 ? (
-                users.map((user, index) => (
-                  <tr key={index} className="border-b">
-                    <td className="p-3">{user.username}</td>
-                    <td className="p-3">
-                      <button
-                        className="bg-blue-500 text-white p-2 rounded hover:bg-blue-600 transition"
-                        onClick={() => handleAddFriend(user.username)}
-                      >
-                        Dodaj
-                      </button>
-                    </td>
-                  </tr>
-                ))
-              ) : (
-                errorMessage && (
-                  <tr>
-                    <td colSpan="2" className="p-3 text-center text-red-500">
-                      {errorMessage}
-                    </td>
-                  </tr>
-                )
-              )}
-            </tbody>
-          </table>
+        <div className="w-full max-w-3xl bg-white rounded-lg shadow-lg p-4">
+          {users.length > 0 ? (
+            <motion.div
+              initial={{ opacity: 0, scale: 0.9 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 0.4, ease: "easeOut" }}
+            >
+              <div className="flex justify-between items-center p-3 border-b">
+                <span className="text-gray-800 text-lg font-semibold">{users[0].username}</span>
+                <button
+                  className="bg-green-500 text-white px-4 py-2 rounded-lg hover:bg-green-600 transition"
+                  onClick={() => handleAddFriend(users[0].username)}
+                >
+                  Dodaj
+                </button>
+              </div>
+            </motion.div>
+          ) : noUserFound ? (
+            <div className="text-center text-red-500 font-semibold p-3">
+              Korisnik nije pronađen.
+            </div>
+          ) : null}
         </div>
 
-        {/* Alert za uspeh */}
         {successMessage && (
-          <div className="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-green-500 text-white p-4 rounded-lg shadow-lg">
+          <motion.div
+            initial={{ opacity: 0, scale: 0.8 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.3 }}
+            className="fixed top-20 left-1/2 transform -translate-x-1/2 bg-green-500 text-white px-6 py-3 rounded-lg shadow-lg"
+          >
             {successMessage}
             <button
               className="ml-4 bg-white text-green-500 px-2 py-1 rounded"
@@ -128,12 +113,16 @@ function UserPage() {
             >
               OK
             </button>
-          </div>
+          </motion.div>
         )}
 
-        {/* Alert za grešku */}
         {errorMessage && (
-          <div className="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-red-500 text-white p-4 rounded-lg shadow-lg">
+          <motion.div
+            initial={{ opacity: 0, scale: 0.8 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.3 }}
+            className="fixed top-20 left-1/2 transform -translate-x-1/2 bg-red-500 text-white px-6 py-3 rounded-lg shadow-lg"
+          >
             {errorMessage}
             <button
               className="ml-4 bg-white text-red-500 px-2 py-1 rounded"
@@ -141,7 +130,7 @@ function UserPage() {
             >
               OK
             </button>
-          </div>
+          </motion.div>
         )}
       </div>
     </>
