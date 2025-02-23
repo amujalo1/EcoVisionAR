@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import TopBar from "../components/TopBar";
-import { getUserByUsername, addFriend, getAll } from "../api/api"; // Import your API functions
+import { getUserByUsername, addFriend, getAll } from "../api/api";
 import { useAtom } from "jotai";
 import { userAtom } from "../store/store";
 
@@ -16,44 +16,32 @@ function Calculator() {
 
   const realFriends = JSON.parse(JSON.stringify(user.friends));
 
-  // Fetch users based on search
   useEffect(() => {
     const fetchUsers = async () => {
       if (search) {
         try {
           const userData = await getUserByUsername(search);
-          if (userData) {
-            setUsers([userData]);
-            setErrorMessage(null);
-            // setNoUserFound(false);
-          } else {
-            setUsers([]);
-            // setNoUserFound(true);
-          }
+          setUsers(userData ? [userData] : []);
+          setErrorMessage(null);
         } catch (err) {
           setUsers([]);
-          // setNoUserFound(true);
         }
       } else {
         setUsers([]);
-        // setNoUserFound(false);
       }
     };
 
     fetchUsers();
   }, [search]);
 
-  // Fetch and filter friends
   useEffect(() => {
     const fetchUsers = async () => {
       try {
-        const usersData = await getAll(); // Fetch all users
-
-        // Filter friends
+        const usersData = await getAll();
         const friends = usersData.filter((eachOne) =>
           realFriends.some((friend) => friend._id === eachOne._id)
         );
-        setFriends(friends); // Set filtered friends
+        setFriends(friends);
       } catch (err) {
         console.log(err);
       } finally {
@@ -62,9 +50,8 @@ function Calculator() {
     };
 
     fetchUsers();
-  }, [user.friends]); // Re-run when user.friends changes
+  }, [user.friends]);
 
-  // Add friend
   const handleAddFriend = async (username) => {
     try {
       const userData = await getUserByUsername(username);
@@ -80,11 +67,8 @@ function Calculator() {
 
       await addFriend(currentUserId, userId);
       setSuccessMessage("Uspješno dodan korisnik.");
-
-      // Fetch updated user data
       const updatedUser = await getUserByUsername(user.username);
-      setUser(updatedUser); // Update the user state
-
+      setUser(updatedUser);
       setSearch("");
       setUsers([]);
     } catch (err) {
@@ -96,7 +80,6 @@ function Calculator() {
     <>
       <TopBar />
       <div className="flex flex-col items-center p-5 mt-10">
-        {/* Search Bar */}
         <div className="flex gap-3 mb-6">
           <input
             type="text"
@@ -107,7 +90,6 @@ function Calculator() {
           />
         </div>
 
-        {/* Display Users or Friends */}
         <div className="w-full max-w-3xl overflow-x-auto bg-white rounded-lg shadow-lg">
           <table className="w-full table-auto border-separate border-spacing-0">
             <thead>
@@ -128,28 +110,29 @@ function Calculator() {
                       <td className="p-3">{Math.round(user.experience)}</td>
                       <td className="p-3">{user.streak}</td>
                       <td className="p-3">
-                        <button
-                          className="bg-blue-500 text-white p-2 rounded hover:bg-blue-600 transition"
+                        <motion.button
+                          className="bg-green-500 text-white p-2 rounded-lg hover:bg-green-600 transition transform hover:scale-105"
+                          whileTap={{ scale: 0.9 }}
                           onClick={() => handleAddFriend(user.username)}
                         >
-                          Dodaj
-                        </button>
+                          Dodaj ✅
+                        </motion.button>
                       </td>
                     </tr>
                   ))
                 : friends.map((friend, index) => {
-                    let rowStyle = "bg-gray-50"; // Default background
-                    let textStyle = "text-gray-800"; // Default text color
-                    let medal = ""; // Default no medal
+                    let rowStyle = "bg-gray-50";
+                    let textStyle = "text-gray-800";
+                    let medal = "";
 
                     if (index === 0) {
-                      rowStyle = "bg-yellow-100 font-semibold"; // Gold
+                      rowStyle = "bg-yellow-100 font-semibold";
                       medal = " 🏅";
                     } else if (index === 1) {
-                      rowStyle = "bg-gray-200"; // Silver
+                      rowStyle = "bg-gray-200";
                       medal = " 🥈";
                     } else if (index === 2) {
-                      rowStyle = "bg-orange-100"; // Bronze
+                      rowStyle = "bg-orange-100";
                       medal = " 🥉";
                     }
 
@@ -164,14 +147,10 @@ function Calculator() {
                         <td className={`p-3 text-md ${textStyle}`}>
                           {friend.username}
                         </td>
-                        <td
-                          className={`p-3 font-medium text-green-700 text-center`}
-                        >
+                        <td className={`p-3 font-medium text-green-700 text-center`}>
                           {Math.round(friend.experience)}
                         </td>
-                        <td
-                          className={`p-3 font-medium text-green-700 text-center`}
-                        >
+                        <td className={`p-3 font-medium text-green-700 text-center`}>
                           {friend.streak}
                         </td>
                       </tr>
@@ -180,42 +159,19 @@ function Calculator() {
             </tbody>
           </table>
         </div>
-
-        {/* Success Message */}
-        {successMessage && (
-          <motion.div
-            initial={{ opacity: 0, scale: 0.8 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.3 }}
-            className="fixed top-20 left-1/2 transform -translate-x-1/2 bg-green-500 text-white px-6 py-3 rounded-lg shadow-lg"
-          >
-            {successMessage}
-            <button
-              className="ml-4 bg-white text-green-500 px-2 py-1 rounded"
-              onClick={() => setSuccessMessage(null)}
+        <AnimatePresence>
+          {successMessage && (
+            <motion.div
+              initial={{ opacity: 0, y: -20 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -20 }}
+              transition={{ duration: 0.4 }}
+              className="fixed top-20 left-1/2 transform -translate-x-1/2 bg-green-500 text-white px-6 py-3 rounded-lg shadow-lg"
             >
-              OK
-            </button>
-          </motion.div>
-        )}
-
-        {/* Error Message */}
-        {errorMessage && (
-          <motion.div
-            initial={{ opacity: 0, scale: 0.8 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.3 }}
-            className="fixed top-20 left-1/2 transform -translate-x-1/2 bg-red-500 text-white px-6 py-3 rounded-lg shadow-lg"
-          >
-            {errorMessage}
-            <button
-              className="ml-4 bg-white text-red-500 px-2 py-1 rounded"
-              onClick={() => setErrorMessage(null)}
-            >
-              OK
-            </button>
-          </motion.div>
-        )}
+              {successMessage}
+            </motion.div>
+          )}
+        </AnimatePresence>
       </div>
     </>
   );

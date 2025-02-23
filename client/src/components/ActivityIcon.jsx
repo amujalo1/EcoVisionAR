@@ -30,7 +30,7 @@ const ActivityIcon = ({ activity, count, onClick }) => {
           <Icon className="w-8 h-8" />
         </div>
         <span className="mt-2 font-medium capitalize">{activity}</span>
-        <span className="text-sm text-gray-600">{count} mins</span>
+        <span className="text-sm text-gray-600">{count.toFixed(2)} mins</span>
         <span
           className={`text-sm font-medium ${
             isGreen ? "text-green-600" : "text-red-600"
