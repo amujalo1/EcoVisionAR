@@ -1,0 +1,2 @@
+MONGO_URI=mongodb+srv://amujalo1:MUJALO64@cluster0.epxst.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0
+PORT=5000
