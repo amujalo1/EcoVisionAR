@@ -1,3 +1,4 @@
+# .env -> .env copy
 # Ecovision - PWA namjenjen za androide
 
 ## Opis Projekta
