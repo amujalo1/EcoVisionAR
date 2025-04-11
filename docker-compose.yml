@@ -1,0 +1,28 @@
+version: "3.8"
+
+services:
+  server:
+    build:
+      context: ./server
+    container_name: ecovision-server
+    networks:
+      - ecovision-network
+    ports:
+      - "5000:5000"
+    environment:
+      - NODE_ENV=production
+
+  client:
+    build:
+      context: ./client
+    container_name: ecovision-client
+    networks:
+      - ecovision-network
+    ports:
+      - "5173:5173"
+    environment:
+      - NODE_ENV=production
+
+networks:
+  ecovision-network:
+    driver: bridge

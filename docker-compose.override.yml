@@ -1,0 +1,29 @@
+version: "3.8"
+
+services:
+  server:
+    image: amujalo1/ecovision-server:latest # Zamijenite <dockerhub-username> sa vašim Docker Hub korisničkim imenom
+    container_name: ecovision-server
+    networks:
+      - ecovision-network
+    ports:
+      - "5000:5000"
+    environment:
+      - NODE_ENV=production
+      - MONGO_URI=${MONGO_URI} # Koristi varijable iz .env fajla
+      - PORT=5000
+
+  client:
+    build:
+      context: ./client
+    container_name: ecovision-client
+    networks:
+      - ecovision-network
+    ports:
+      - "5173:5173"
+    environment:
+      - NODE_ENV=production
+
+networks:
+  ecovision-network:
+    driver: bridge
